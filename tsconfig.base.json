@@ -5,17 +5,18 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2020",
     "module": "esnext",
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "star-fox-sdk": ["packages/star-fox-sdk/src/index.ts"]
+      "@consensys/star-fox-sdk": ["packages/star-fox-sdk/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,39 @@
+{
+  "name": "star-fox-snap",
+  "version": "0.0.0",
+  "description": "Cosmos wallet in metamask flask",
+  "scripts": {
+    "build:clean": "yarn clean && yarn build",
+    "build:website": "node ./scripts/build-website.js",
+    "build": "mm-snap build && mm-snap manifest --fix",
+    "eval": "mm-snap eval",
+    "serve": "mm-snap serve",
+    "serve:dev": "mm-snap watch -s src/index.ts -d out",
+    "clean": "rimraf dist/*"
+  },
+  "keywords": [
+    "cosmos",
+    "snap",
+    "metamask"
+  ],
+  "author": "monte.lai@consensys.net",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "dist/",
+    "images/",
+    "snap.manifest.json"
+  ],
+  "dependencies": {
+    "@chain-registry/assets": "^1.3.1",
+    "@chain-registry/client": "^1.2.1",
+    "@chain-registry/utils": "^1.2.1",
+    "chain-registry": "^1.3.1",
+    "joi": "^17.6.4"
+  },
+  "devDependencies": {
+    "@chain-registry/types": "^0.13.1",
+    "@types/joi": "^17.2.3"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "star-fox-sdk": "packages/star-fox-sdk",
+    "star-fox-snap": "packages/star-fox-snap"
+  }
+}

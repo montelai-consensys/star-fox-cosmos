@@ -1,0 +1,40 @@
+{
+  "version": "0.0.0",
+  "description": "Cosmos wallet in metamask flask",
+  "proposedName": "star-fox-cosmos",
+  "source": {
+    "shasum": "jiZc9LA8KCrJUN/doc6420oZwe9GWl6Mc4Z1xWn9J1w=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "packageName": "star-fox-snap",
+        "registry": "https://registry.npmjs.org"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_confirm": {},
+    "snap_manageState": {},
+    "endowment:network-access": {},
+    "snap_getBip32Entropy": [
+      {
+        "path": [
+          "m",
+          "44'",
+          "118'",
+          "0'",
+          "0",
+          "0"
+        ],
+        "curve": "secp256k1"
+      }
+    ],
+    "snap_getBip44Entropy": [
+      {
+        "coinType": 118
+      }
+    ],
+    "snap_notify": {}
+  },
+  "manifestVersion": "0.1"
+}
