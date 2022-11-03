@@ -1,5 +1,9 @@
 import { OnRpcRequestHandler, SnapProvider } from '@metamask/snap-types';
 import { MetamaskState } from '@consensys/star-fox-sdk';
+import {
+  showConfirmationDialog,
+  ConfirmationDialogContent,
+} from './utils/confirmation';
 declare const wallet: SnapProvider;
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
@@ -19,6 +23,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   console.debug(`Current State`, state);
   switch (request.method) {
     case 'hello':
+      const message: ConfirmationDialogContent = {
+        prompt: 'Hello Ping',
+        description: 'This is a ping message',
+      };
+      return await showConfirmationDialog(wallet, message);
     default:
       throw new Error('Method not found.');
   }
