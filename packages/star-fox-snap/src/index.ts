@@ -28,6 +28,12 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
         description: 'This is a ping message',
       };
       return await showConfirmationDialog(wallet, message);
+    case 'addNetwork':
+      return;
+    case 'changeNetwork':
+      return await changeNetwork(wallet, state, request.params);
+    case 'updateRpc':
+      return;
     default:
       throw new Error('Method not found.');
   }
