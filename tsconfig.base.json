@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@consensys/star-fox-sdk": ["packages/star-fox-sdk/src/index.ts"]
+      "@consensys/star-fox-sdk": ["packages/sdk/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
