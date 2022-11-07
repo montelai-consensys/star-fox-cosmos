@@ -3,7 +3,7 @@
   "description": "Cosmos wallet in metamask flask",
   "proposedName": "star-fox-cosmos",
   "source": {
-    "shasum": "LFYL5rIWewyC2HSsLo+q6Sz0Q6HD2VYg+ZbGN02+JCM=",
+    "shasum": "po3PctDqVsWoCluViE3jjkkjO1MrICabHlr209Wia+Y=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
