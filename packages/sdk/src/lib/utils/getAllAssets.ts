@@ -21,7 +21,10 @@ export const getSnapSingleNetworkBalances = (
   assetList.forEach(
     (asset) =>
       (balances[asset.symbol] = {
-        ...asset,
+        type_asset: asset.type_asset,
+        address: asset.address,
+        base: asset.base,
+        name: asset.name,
         balance: '0',
       })
   );
@@ -31,12 +34,28 @@ export const getSnapSingleNetworkBalances = (
 
 export const getAllNetworkBalances = (): SnapBalances => {
   const snapBalances: SnapBalances = {};
-  chains.forEach(
-    (chain) =>
-      (snapBalances[chain.chain_name] = getSnapSingleNetworkBalances(
-        chain.chain_name
-      ))
-  );
+  for (let i = 0; i < chains.length; i++) {
+    try {
+      snapBalances[chains[i].chain_name] = getSnapSingleNetworkBalances(
+        chains[i].chain_name
+      );
+    } catch (e) {
+      console.debug(
+        `[getAllNetworkBalances] Chain ${chains[i].chain_name} is missing assets. Skipping..`
+      );
+    }
+  }
 
   return snapBalances;
+};
+
+export const getTokenImageURI = (chainName: string): string | undefined => {
+  const chainAsset = assets.find((chain) => chain.chain_name === chainName);
+  const asset: Asset = chainAsset?.assets?.[0] as Asset;
+  if (!asset || !asset?.logo_URIs) return undefined;
+
+  const fileType: string = Object.keys(asset.logo_URIs)[0];
+  const uri = asset.logo_URIs[fileType];
+
+  return uri;
 };

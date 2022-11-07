@@ -6,13 +6,18 @@ import { getChain } from './networkChecker';
 
 export const getAllNetworks = (base64PublicKey: string): SnapNetworks => {
   const snapNetworks: SnapNetworks = {};
-  chains.forEach(
-    (chain) =>
-      (snapNetworks[chain.chain_name] = generateChainWithAddress(
-        chain.chain_name,
+  for (let i = 0; i < chains.length; i++) {
+    try {
+      snapNetworks[chains[i].chain_name] = generateChainWithAddress(
+        chains[i].chain_name,
         base64PublicKey
-      ))
-  );
+      );
+    } catch (e) {
+      console.debug(
+        `[getAllNetworks] Unable to get chain ${chains[i].chain_name}`
+      );
+    }
+  }
 
   return snapNetworks;
 };
