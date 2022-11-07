@@ -1,0 +1,36 @@
+{
+  "name": "star-fox-snap",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/star-fox-snap/src",
+  "projectType": "application",
+  "implicitDependencies": ["sdk"],
+  "targets": {
+    "nxbuild": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/star-fox-snap",
+        "tsConfig": "packages/star-fox-snap/tsconfig.json",
+        "packageJson": "packages/star-fox-snap/package.json",
+        "main": "packages/star-fox-snap/src/index.ts",
+        "assets": ["packages/star-fox-snap/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/snap/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/defi-lib"],
+      "options": {
+        "jestConfig": "packages/snap/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
