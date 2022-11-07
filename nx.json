@@ -50,5 +50,10 @@
       }
     }
   },
+  "pluginsConfig": {
+    "@nrwl/js": {
+      "analyzeSourceFiles": true
+    }
+  },
   "defaultProject": "star-fox-snap"
 }
