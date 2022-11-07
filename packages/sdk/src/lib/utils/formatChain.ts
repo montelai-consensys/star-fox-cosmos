@@ -1,5 +1,5 @@
 import { Chain } from '@chain-registry/types';
-import { ChainFee, FormattedChain } from '@consensys/star-fox-sdk';
+import { ChainFee, FormattedChain } from 'packages/sdk/src';
 import { getDenom } from './getDenom';
 
 export const formatChain = (chain: Chain): FormattedChain => {

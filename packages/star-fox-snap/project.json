@@ -1,7 +1,0 @@
-{
-  "name": "star-fox-snap",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/star-fox-snap/src",
-  "projectType": "application",
-  "tags": []
-}

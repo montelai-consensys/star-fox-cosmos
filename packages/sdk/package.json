@@ -1,0 +1,7 @@
+{
+  "name": "@consensys/star-fox-sdk",
+  "version": "0.0.1",
+  "dependencies": {
+    "@chain-registry/utils": "^1.2.1"
+  }
+}

@@ -1,9 +1,9 @@
 import { Chain, Asset } from '@chain-registry/types';
-import { FormattedChain, FormattedChainWithAddress } from './metamaskState';
-
-export interface AssetWithBalance extends Asset {
-  balance: string;
-}
+import {
+  AssetWithBalance,
+  FormattedChain,
+  FormattedChainWithAddress,
+} from './metamaskState';
 
 export interface ChainSliceState {
   chain: Record<string, FormattedChainWithAddress>;
