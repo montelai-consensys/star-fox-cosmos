@@ -1,5 +1,12 @@
 import { OnRpcRequestHandler, SnapProvider } from '@metamask/snap-types';
-import { MetamaskState } from '@consensys/star-fox-sdk';
+import { getBalance, sendTransfer, changeNetwork } from './api';
+import {
+  BalanceQuery,
+  ChangeNetworkQuery,
+  MetamaskState,
+  SignAminoPayload,
+  SignDirectPayload,
+} from '@consensys/star-fox-sdk';
 import {
   showConfirmationDialog,
   ConfirmationDialogContent,
@@ -10,10 +17,14 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   origin,
   request,
 }) => {
+  const requestParams = request.params as unknown as RequestParam;
   let state: MetamaskState = (await wallet.request({
     method: 'snap_manageState',
     params: ['get'],
   })) as MetamaskState;
+
+  console.log(`[Origin] ${origin}`);
+  console.debug(`Current State`, state);
 
   if (!state) {
     console.debug(`State not found, reinitializing`);
@@ -31,7 +42,12 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'addNetwork':
       return;
     case 'changeNetwork':
-      return await changeNetwork(wallet, state, request.params);
+      const [updatedState, networkChangePayload] = await changeNetwork(
+        wallet,
+        state,
+        request.params as unknown as ChangeNetworkQuery
+      );
+      return networkChangePayload;
     case 'updateRpc':
       return;
     default:
