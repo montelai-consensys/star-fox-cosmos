@@ -1,13 +1,16 @@
 import { pubkeyToAddress } from '@cosmjs/amino';
-import { MetamaskState } from '@consensys/star-fox-sdk';
+import {
+  MetamaskState,
+  getAllNetworkBalances,
+  getChain,
+  formatChain,
+} from '@consensys/star-fox-sdk';
 import { SnapProvider } from '@metamask/snap-types';
-import { getChain } from '../utils/networkChecker';
 import { DirectSecp256k1Wallet } from '@cosmjs/proto-signing';
 
 export async function initializeAccount(
   wallet: SnapProvider
 ): Promise<MetamaskState> {
-  const chain = getChain('cosmoshub');
   const cosmosNode = await wallet.request({
     method: 'snap_getBip32Entropy',
     params: {
@@ -15,39 +18,41 @@ export async function initializeAccount(
       curve: 'secp256k1',
     },
   });
-
-  console.debug('[Chain]', chain);
-
+  const cosmoshub = formatChain(getChain('cosmoshub'));
   const secp256Wallet = await DirectSecp256k1Wallet.fromKey(
     Buffer.from(cosmosNode['privateKey'], 'hex'),
-    chain.bech32_prefix
+    cosmoshub.bech32_prefix
   );
-  console.log(await secp256Wallet.getAccounts());
 
-  const cosmosPk = pubkeyToAddress(
+  const base64PublicKey = Buffer.from(
+    (await secp256Wallet.getAccounts())[0].pubkey
+  ).toString('base64');
+
+  const cosmosAddress = pubkeyToAddress(
     {
       type: 'tendermint/PubKeySecp256k1',
-      value: Buffer.from(
-        (await secp256Wallet.getAccounts())[0].pubkey
-      ).toString('base64'),
+      value: base64PublicKey,
     },
-    chain.bech32_prefix
+    cosmoshub.bech32_prefix
   );
+
+  const cosmosWithAddress = { ...cosmoshub, address: cosmosAddress };
+
+  const balances = getAllNetworkBalances();
+  const transactions = {};
+  Object.keys(balances).forEach((chainName) => (transactions[chainName] = []));
 
   //generate wallets for all supported chains
   const newState: MetamaskState = {
-    currentAddress: cosmosPk,
-    currentChain: chain,
+    currentAddress: cosmosAddress,
+    currentChain: cosmosWithAddress,
     balance: '0',
     networks: {
-      cosmoshub: chain,
+      cosmoshub: cosmosWithAddress,
     },
-    transactions: {
-      cosmoshub: [],
-    },
-    pk: Buffer.from((await secp256Wallet.getAccounts())[0].pubkey).toString(
-      'base64'
-    ),
+    balances,
+    transactions,
+    publicKey: base64PublicKey,
   };
 
   await wallet.request({

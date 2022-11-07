@@ -11,6 +11,8 @@ import {
   showConfirmationDialog,
   ConfirmationDialogContent,
 } from './utils/confirmation';
+import { initializeAccount } from './cosmos/initializeAccount';
+import { RequestParam } from './types';
 declare const wallet: SnapProvider;
 
 export const onRpcRequest: OnRpcRequestHandler = async ({
