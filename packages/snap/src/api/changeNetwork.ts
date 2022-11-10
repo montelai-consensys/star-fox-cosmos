@@ -16,8 +16,6 @@ export async function changeNetwork(
 ): Promise<ChangeNetworkQueryResponse> {
   console.debug('[Change Network]', params);
   const { chainName } = params;
-  if (state.currentChain.chain_name === chainName)
-    throw new Error('[Change Network] Abort: Chain is the same'); //network is the same
   validateNetwork(chainName);
   const chain = getChain(chainName);
 
@@ -56,7 +54,7 @@ export async function changeNetwork(
           : []),
       ],
     },
-    currentChain: formattedChainWithAddress,
+    currentChain: chainName,
     currentAddress: chainAddress,
   };
 

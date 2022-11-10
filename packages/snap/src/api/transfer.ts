@@ -4,6 +4,7 @@ import { TransferPayload } from '../types';
 import { SnapProvider } from '@metamask/snap-types';
 import { getSigningClient } from './getSigningClient';
 import { StdFee } from '@cosmjs/amino';
+import { showConfirmationDialog } from '../utils/confirmation';
 
 export async function sendTransfer(
   wallet: SnapProvider,
@@ -15,24 +16,33 @@ export async function sendTransfer(
   const client = await getSigningClient(
     wallet,
     state,
-    state.currentChain.chain_name
+    transferPayload.chainName
   );
 
-  const transferAmount = coins(
-    transferPayload.amount,
-    state.currentChain.denom
-  );
+  const denom = state.networks[transferPayload.chainName].denom;
+  const transferAmount = coins(transferPayload.amount, denom);
 
   //simulate
 
   //estimate gas
+  const confirmation = await showConfirmationDialog(wallet, {
+    prompt: 'Confirm Transfer',
+    description: `Chain: ${transferPayload.chainName}`,
+    textAreaContent: `To: ${transferPayload.recipient}\n From: ${
+      state.networks[transferPayload.chainName].address
+    }\nAmount: ${transferPayload.amount} \nMemo: ${transferPayload.memo}`,
+  });
+
+  if (!confirmation) {
+    throw new Error('Signer has rejected');
+  }
 
   const transfer = await client.sendTokens(
     state.currentAddress,
     transferPayload.recipient,
     transferAmount,
     {
-      amount: [{ denom: 'uosmo', amount: '500' }],
+      amount: [{ denom: denom, amount: '500' }],
       gas: '200000',
     },
     transferPayload.memo

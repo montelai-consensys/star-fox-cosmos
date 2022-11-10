@@ -5,6 +5,7 @@ import {
   getChain,
   formatChain,
   getAllNetworks,
+  initializeSnapDelegations,
 } from '../../../sdk/src/index';
 import { SnapProvider } from '@metamask/snap-types';
 import { DirectSecp256k1Wallet } from '@cosmjs/proto-signing';
@@ -37,10 +38,13 @@ export async function initializeAccount(
     cosmoshub.bech32_prefix
   );
 
+  console.debug(`Public Key ${base64PublicKey}`);
+
   const balances = getAllNetworkBalances();
   const transactions = {};
   Object.keys(balances).forEach((chainName) => (transactions[chainName] = []));
   const networks = getAllNetworks(base64PublicKey);
+  const delegations = initializeSnapDelegations();
 
   //generate wallets for all supported chains
   const newState: MetamaskState = {
@@ -49,6 +53,7 @@ export async function initializeAccount(
     networks,
     balances,
     transactions,
+    delegations,
     publicKey: base64PublicKey,
   };
 

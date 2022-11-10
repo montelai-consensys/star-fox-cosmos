@@ -6,7 +6,8 @@ import {
   MetamaskState,
   SignAminoPayload,
   SignDirectPayload,
-} from '../../sdk/src/index';
+} from '@consensys/star-fox-sdk';
+//} from '../../sdk/src/index';
 import {
   showConfirmationDialog,
   ConfirmationDialogContent,
@@ -34,7 +35,6 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   if (!state) {
     console.debug(`State not found, reinitializing`);
     state = await initializeAccount(wallet);
-    console.log(state);
   }
 
   switch (request.method) {
@@ -63,8 +63,13 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       return;
 
     // Convenience Methods of snap
-    case 'getCurrentNetwork':
+    case 'snap_getChainsAndBalances':
       return getCurrentState(state);
+    case 'snap_getCurrentNetwork':
+      return {
+        currentChain: state.currentChain,
+        currentAddress: state.currentAddress,
+      };
     case 'addNetwork':
       return;
     case 'changeNetwork':
