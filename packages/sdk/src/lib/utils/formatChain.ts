@@ -21,8 +21,13 @@ export const formatChain = (chain: Chain): FormattedChain => {
           return rpc.address;
         })
       : [],
+    rest: chain?.apis?.rest ? chain.apis.rest.map((rest) => rest.address) : [],
     fees,
     denom: denom.base,
+    symbol: denom.symbol,
+    rewards: '0',
+    staked: '0',
   };
+
   return formattedChain;
 };

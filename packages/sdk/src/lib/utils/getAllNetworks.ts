@@ -35,7 +35,7 @@ const generateChainWithAddress = (
     chain.bech32_prefix
   );
 
-  const chainWithAddress = { ...chain, address };
+  const chainWithAddress = { ...chain, address, staked: '0', rewards: '0' };
 
   return chainWithAddress;
 };

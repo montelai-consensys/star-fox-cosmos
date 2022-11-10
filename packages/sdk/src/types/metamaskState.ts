@@ -1,15 +1,15 @@
 import { SnapTransactions } from './transactions';
-import { Asset } from '@chain-registry/types';
+import { Asset, AssetDenomUnit } from '@chain-registry/types';
 
 export interface CurrentChain {
-  currentChain: FormattedChainWithAddress;
+  currentChain: string;
   currentAddress: string;
-  balance: string; //cosmos chains returns balances as string because of possible int overflow
 }
 
 export interface MetamaskState extends CurrentChain {
   networks: SnapNetworks;
   balances: SnapBalances;
+  delegations: SnapDelegations;
   transactions: SnapTransactions;
   publicKey: string;
 }
@@ -25,22 +25,46 @@ export interface ChainFee {
 export interface FormattedChain {
   chain_name: string;
   chain_id: string;
-  website: string;
+  website: string | null;
   network_type: string;
   bech32_prefix: string;
   rpc: Array<string>;
+  rest: Array<string>;
   fees: ChainFee;
   denom: string;
+  symbol: string;
+  staked: string | number;
+  rewards: string | number;
 }
 
 export interface FormattedChainWithAddress extends FormattedChain {
   address: string;
 }
 
-export interface AssetWithBalance extends Asset {
+export interface AssetWithBalance {
+  type_asset?: string;
+  address?: string;
+  base: string;
+  name: string;
+  decimal: number;
+  symbol: string;
   balance: string | number;
+}
+
+export interface CurrentChainsAndBalances {
+  networks: SnapNetworks;
+  balances: SnapBalances;
+  delegations: SnapDelegations;
+  address: string;
+}
+
+export interface Delegation {
+  delegator_address: string;
+  shares: string;
+  validator_address: string;
 }
 
 export type SnapNetworks = Record<string, FormattedChainWithAddress>;
 export type SnapBalances = Record<string, SnapSingleNetworkBalances>;
+export type SnapDelegations = Record<string, Array<Delegation>>;
 export type SnapSingleNetworkBalances = Record<string, AssetWithBalance>;

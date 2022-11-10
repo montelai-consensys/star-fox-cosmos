@@ -12,8 +12,27 @@ export const getSnapSingleNetworkBalances = (
 ): SnapSingleNetworkBalances => {
   const assetListResult: Array<{ assets: Array<Asset>; chain_name: string }> =
     getAssetLists(chainName, ibcList, assets);
-  if (assetListResult.length === 0)
-    throw new Error(`Unable to get all assets of ${chainName}`);
+
+  if (assetListResult.length == 0) {
+    assetListResult.push({ chain_name: chainName, assets: [] });
+  }
+
+  const nativeAssets = assets.find((chain) => chainName === chain.chain_name);
+  assetListResult[0].assets = [
+    ...assetListResult[0].assets,
+    ...nativeAssets!.assets,
+  ];
+
+  //handle for testnets
+  if (chainName.includes('testnet')) {
+    const testnetAssets = assets.find(
+      (asset) => asset.chain_name === chainName
+    );
+    assetListResult[0].assets = [
+      ...assetListResult[0].assets,
+      ...testnetAssets!.assets,
+    ];
+  }
 
   const assetList = assetListResult?.[0].assets;
   const balances: SnapSingleNetworkBalances = {};
@@ -25,6 +44,11 @@ export const getSnapSingleNetworkBalances = (
         address: asset.address,
         base: asset.base,
         name: asset.name,
+        symbol: asset.symbol,
+        //@ts-ignore
+        decimal: asset.denom_units.find(
+          (denom) => denom.denom === asset.symbol.toLowerCase()
+        )?.exponent,
         balance: '0',
       })
   );
@@ -40,9 +64,10 @@ export const getAllNetworkBalances = (): SnapBalances => {
         chains[i].chain_name
       );
     } catch (e) {
-      console.debug(
-        `[getAllNetworkBalances] Chain ${chains[i].chain_name} is missing assets. Skipping..`
-      );
+      console.log(chains[i].chain_name, e);
+      //console.debug(
+      //`[getAllNetworkBalances] Chain ${chains[i].chain_name} is missing assets. Skipping..`
+      //);
     }
   }
 
@@ -55,7 +80,8 @@ export const getTokenImageURI = (chainName: string): string | undefined => {
   if (!asset || !asset?.logo_URIs) return undefined;
 
   const fileType: string = Object.keys(asset.logo_URIs)[0];
-  const uri = asset.logo_URIs[fileType];
-
+  const uri = asset.logo_URIs[
+    fileType as keyof typeof asset.logo_URIs
+  ] as string;
   return uri;
 };
