@@ -1,9 +1,17 @@
-import { MetamaskState } from '../../../sdk/src/index';
+import {
+  CurrentChainsAndBalances,
+  MetamaskState,
+  SnapBalances,
+  SnapNetworks,
+} from '../../../sdk/src/index';
 
-export const getCurrentState = (state: MetamaskState) => {
+export const getCurrentState = (
+  state: MetamaskState
+): CurrentChainsAndBalances => {
   return {
-    network: state.currentChain,
-    balance: state.balance,
+    networks: state.networks,
+    balances: state.balances,
+    delegations: state.delegations,
     address: state.currentAddress,
   };
 };
