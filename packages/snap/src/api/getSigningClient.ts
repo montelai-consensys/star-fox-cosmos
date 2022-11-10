@@ -18,7 +18,7 @@ export async function getSigningClient(
 
   const hdWallet = await DirectSecp256k1Wallet.fromKey(
     Buffer.from(cosmosNode['privateKey'], 'hex'),
-    state.currentChain.bech32_prefix
+    state.networks[chainId].bech32_prefix
   );
   const proxy = 'http://localhost:8081';
   const rpc = `${proxy}/https://rpc-test.osmosis.zone/`;
