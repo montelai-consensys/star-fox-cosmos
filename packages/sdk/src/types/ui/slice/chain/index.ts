@@ -1,1 +1,1 @@
-export * from './chain-slice.ts';
+export * from './chain-slice';

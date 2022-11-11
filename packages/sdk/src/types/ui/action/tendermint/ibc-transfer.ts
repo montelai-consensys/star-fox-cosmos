@@ -1,5 +1,4 @@
 import { Coin, StdFee } from '@cosmjs/amino';
-import { Height } from 'cosmjs-types';
 import Joi from 'joi';
 
 export interface IBCTransferPayload {
