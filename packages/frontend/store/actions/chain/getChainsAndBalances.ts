@@ -1,13 +1,12 @@
-import { ChangeNetworkPayload } from '@consensys/star-fox-sdk';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { CurrentChainsAndBalances } from '../../../../sdk/src';
+import { CurrentChainsAndBalances } from '@consensys/star-fox-sdk';
 import { siteConfig } from '../../../config/siteConfig';
 import { getWalletProvider } from '../../../connector/metamask';
 import { updateCurrentChainsAndBalances } from '../../slices/chain.slice';
 
 export const getChainsAndBalancesAction = createAsyncThunk(
   'actions/chains/updateCurrentChainsAndBalances',
-  async (_, thunkAPI) => {
+  async (param, thunkAPI) => {
     const flask = await getWalletProvider();
     console.debug(`[getChainsAndBalanceAction] Getting latest state`);
 
