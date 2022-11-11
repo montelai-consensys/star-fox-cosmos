@@ -1,27 +1,14 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { HYDRATE } from 'next-redux-wrapper';
 import { siteConfig } from '../../config/siteConfig';
-import { BalanceQueryResponse, CurrentChain } from '@consensys/star-fox-sdk';
+import {
+  BalanceQueryResponse,
+  CurrentChain,
+  TendermintSnapState,
+} from '@consensys/star-fox-sdk';
 import { changeNetworkAction } from '../actions/snap/changeNetwork';
 import { getBalanceAction } from '../actions/snap/getBalanceAction';
 import { AppState } from '../store';
-
-export interface TendermintSnapState extends CurrentChain {
-  snapId: string;
-  snapVersion: string;
-  ready: boolean; // Set to true after balances become available for the first time
-  actions: {
-    [actionPrefix: string]: ActionStatus;
-  };
-}
-
-export interface ActionStatus {
-  processing: boolean;
-  result: unknown;
-  progress?: number;
-  message?: string;
-  error: SerializedError;
-}
 
 const initialState: TendermintSnapState = {
   snapId: siteConfig.snapId,

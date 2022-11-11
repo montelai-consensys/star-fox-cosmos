@@ -6,7 +6,7 @@ import {
   BalanceQueryResponse,
   AssetWithBalance,
   SnapDelegations,
-} from '../../../sdk/src';
+} from '@consensys/star-fox-sdk';
 import { createSlice } from '@reduxjs/toolkit';
 import { AppState } from '../store';
 
