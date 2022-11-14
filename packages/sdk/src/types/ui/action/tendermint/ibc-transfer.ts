@@ -24,5 +24,9 @@ export const ibcTransferSchema = Joi.object({
   sourceChannel: Joi.string().required(),
   timeoutHeight: Joi.object({}).optional(),
   timeoutTimestamp: Joi.number().optional(),
-  fee: [Joi.number(), Joi.valid(['auto']), Joi.object({})],
+  fee: Joi.alternatives().try(
+    Joi.number(),
+    Joi.string().valid('auto'),
+    Joi.object({})
+  ),
 });
