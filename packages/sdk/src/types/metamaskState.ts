@@ -1,5 +1,5 @@
 import { SnapTransactions } from './transactions';
-import { Asset, AssetDenomUnit } from '@chain-registry/types';
+import { GovernanceProposal } from './proposals';
 
 export interface CurrentChain {
   currentChain: string;
@@ -68,3 +68,4 @@ export type SnapNetworks = Record<string, FormattedChainWithAddress>;
 export type SnapBalances = Record<string, SnapSingleNetworkBalances>;
 export type SnapDelegations = Record<string, Array<Delegation>>;
 export type SnapSingleNetworkBalances = Record<string, AssetWithBalance>;
+export type SnapProposals = Record<string, Array<GovernanceProposal>>;

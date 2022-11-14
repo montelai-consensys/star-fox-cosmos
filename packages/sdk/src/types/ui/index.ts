@@ -4,3 +4,5 @@ export enum BalanceComponentType {
   Staked = 'staked',
   StakedRewards = 'staked-rewards',
 }
+export * from './slice';
+export * from './action';
