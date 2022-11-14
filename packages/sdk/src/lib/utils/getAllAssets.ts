@@ -18,10 +18,12 @@ export const getSnapSingleNetworkBalances = (
   }
 
   const nativeAssets = assets.find((chain) => chainName === chain.chain_name);
-  assetListResult[0].assets = [
-    ...assetListResult[0].assets,
-    ...nativeAssets!.assets,
-  ];
+  if (nativeAssets?.assets) {
+    assetListResult[0].assets = [
+      ...assetListResult[0].assets,
+      ...nativeAssets!.assets,
+    ];
+  }
 
   //handle for testnets
   if (chainName.includes('testnet')) {
