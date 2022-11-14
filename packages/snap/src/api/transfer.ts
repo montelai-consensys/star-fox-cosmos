@@ -5,12 +5,13 @@ import { SnapProvider } from '@metamask/snap-types';
 import { getSigningClient } from './getSigningClient';
 import { StdFee } from '@cosmjs/amino';
 import { showConfirmationDialog } from '../utils/confirmation';
+import { DeliverTxResponse } from '@cosmjs/stargate';
 
 export async function sendTransfer(
   wallet: SnapProvider,
   state: MetamaskState,
   transferPayload: TransferPayload
-) {
+): Promise<DeliverTxResponse> {
   console.debug(`[Transfer]`, transferPayload);
   validateNetwork(transferPayload.chainName);
   const client = await getSigningClient(
@@ -37,7 +38,7 @@ export async function sendTransfer(
     throw new Error('Signer has rejected');
   }
 
-  const transfer = await client.sendTokens(
+  const transfer: DeliverTxResponse = await client.sendTokens(
     state.currentAddress,
     transferPayload.recipient,
     transferAmount,
@@ -47,6 +48,7 @@ export async function sendTransfer(
     },
     transferPayload.memo
   );
+
   console.log(transfer);
 
   return transfer;
