@@ -11,7 +11,7 @@ export function validateNetwork(chainName: string) {
   if (!chain) throw new Error(`Unknown chain name ${chainName}`);
 }
 
-export function getNetworkRpc(chainName: string) {
+export function getNetworkRpc(chainName: string): string {
   const chain = chains.find(({ chain_name }) => chain_name === chainName);
   const rpcs = chain!.apis!.rpc;
   if (!rpcs)
@@ -26,7 +26,7 @@ export function getNetworkRpc(chainName: string) {
   return rpcUrl;
 }
 
-export function getChainRestEndpoint(chainName: string) {
+export function getChainRestEndpoint(chainName: string): string {
   const chain = chains.find(({ chain_name }) => chain_name === chainName);
   const restEndpoints = chain!.apis!.rest;
   if (!restEndpoints)
