@@ -39,7 +39,7 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
                 {
                     method: 'starFoxSnap_transfer',
                     params: {
-                        chainName: snapState.currentChain,
+                        chainId: snapState.currentChainId,
                         amount: amountToSend,
                         recipient: destinationAddress,
                         memo: memo,
