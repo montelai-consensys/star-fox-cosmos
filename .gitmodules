@@ -1,0 +1,3 @@
+[submodule "packages/junoswap-interface"]
+	path = packages/junoswap-interface
+	url = git@github.com:montelai-consensys/junoswap-interface.git
