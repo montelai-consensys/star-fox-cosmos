@@ -15,7 +15,7 @@ export const setCurrentNetworkAction = createAsyncThunk(
       params: [
         siteConfig.snapId,
         {
-          method: 'snap_getCurrentNetwork',
+          method: 'starFoxSnap_getCurrentNetwork',
         },
       ],
     })) as ChangeNetworkPayload;

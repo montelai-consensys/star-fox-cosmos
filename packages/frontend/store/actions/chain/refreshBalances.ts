@@ -7,20 +7,20 @@ import { updateBalance } from '../../slices/chain.slice';
 export const refreshBalanceAction = createAsyncThunk(
   'actions/chains/refreshBalance',
   async (balanceQuery: BalanceQuery, thunkAPI) => {
-    const { chainName, address } = balanceQuery;
+    const { chainId, address } = balanceQuery;
     console.debug(
-      `[refreshBalanceAction] Getting balances for ${chainName} ${address}`
+      `[refreshBalanceAction] Getting balances for ${chainId} ${address}`
     );
 
     const balances = await getBalancesByAddress(
-      chainName,
+      chainId,
       address, //'osmo1qc99y4t293llhaukk6lq74cq8ul38e9djqyrlu',
       {} as Pagination
     );
 
     thunkAPI.dispatch(
       updateBalance({
-        chainName,
+        chainId,
         assets: balances.balances,
       })
     );

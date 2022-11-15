@@ -5,11 +5,12 @@ import { changeNetworkAction } from '../../store/actions/snap/changeNetwork';
 import { installSnap } from 'packages/frontend/utils/installSnap';
 import { siteConfig } from 'packages/frontend/config/siteConfig';
 import { useState } from 'react';
+import { getChainsAndBalancesAction } from 'packages/frontend/store/actions/chain/getChainsAndBalances';
 
 export const Debug = () => {
     const flask = useMetamaskFlask();
     const dispatch = useAppDispatch();
-    const [showDebug, setShowDebug] = useState(true);
+    const [showDebug, setShowDebug] = useState(false);
     const showDebugPanel = () => {
         return (
             <>
@@ -39,22 +40,23 @@ export const Debug = () => {
                 </Button>
                 <Button
                     onClick={async () => {
-                                await flask.provider.request({
-            method: 'wallet_invokeSnap',
-            params: [
-                siteConfig.snapId,
-                {
-                    method: 'transfer',
-                    params: {
-                        chainName:"osmosis",
-                        amount: "123",
-                        recipient: "osmo1a9m4a3g7j6mcrahk4pm4rpe4dez3hx26j0f2aj",
-                        memo: null,
-                        fee: null
-                    }
-                }
-            ]
-        });
+                        await flask.provider.request({
+                            method: 'wallet_invokeSnap',
+                            params: [
+                                siteConfig.snapId,
+                                {
+                                    method: 'starFoxSnap_transfer',
+                                    params: {
+                                        chainId: 'osmosis-1',
+                                        amount: '123',
+                                        recipient:
+                                            'osmo1a9m4a3g7j6mcrahk4pm4rpe4dez3hx26j0f2aj',
+                                        memo: null,
+                                        fee: null
+                                    }
+                                }
+                            ]
+                        });
 
                         console.log();
                     }}
@@ -75,7 +77,7 @@ export const Debug = () => {
                             params: [
                                 siteConfig.snapId,
                                 {
-                                    method: 'reset'
+                                    method: 'starFoxSnap_reset'
                                 }
                             ]
                         });
@@ -85,24 +87,24 @@ export const Debug = () => {
                 </Button>
                 <Button
                     onClick={() =>
-                        dispatch(changeNetworkAction({ chainName: 'cosmoshub' }))
+                        dispatch(changeNetworkAction({ chainId: 'cosmoshub-4' }))
                     }
                 >
                     Change to Atom
                 </Button>
                 <Button
                     onClick={() =>
-                        dispatch(changeNetworkAction({ chainName: 'osmosis' }))
+                        dispatch(changeNetworkAction({ chainId: 'osmosis-1' }))
                     }
                 >
                     Change to osmosis
                 </Button>
                 <Button
                     onClick={() => {
-                        console.log();
+                        dispatch(getChainsAndBalancesAction());
                     }}
                 >
-                    Get Accounts Stargate
+                    Reset Next chain and balances
                 </Button>
             </>
         );

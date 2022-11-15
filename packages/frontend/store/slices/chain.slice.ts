@@ -6,14 +6,26 @@ import {
   BalanceQueryResponse,
   AssetWithBalance,
   SnapDelegations,
+  GovernanceProposal,
 } from '@consensys/star-fox-sdk';
 import { createSlice } from '@reduxjs/toolkit';
+import { chains } from 'chain-registry';
 import { AppState } from '../store';
+
+const populateProposals = (): Record<string, Array<GovernanceProposal>> => {
+  const proposals = {};
+  chains.forEach((chain) => {
+    proposals[chain.chain_name] = [];
+  });
+
+  return proposals;
+};
 
 const initialState: ChainSliceState = {
   networks: {},
   balances: {},
   delegations: {},
+  proposals: populateProposals(),
   isLoading: false,
 };
 
@@ -34,25 +46,24 @@ export const chainSlice = createSlice({
     },
     updateBalance(state: ChainSliceState, action) {
       const {
-        chainName,
+        chainId,
         assets,
-      }: { chainName: string; assets: Array<BalanceQueryResponse> } =
+      }: { chainId: string; assets: Array<BalanceQueryResponse> } =
         action.payload;
 
-      console.debug(
-        `[updateBalance] Updating balance for ${chainName}`,
-        assets
-      );
+      console.debug(`[updateBalance] Updating balance for ${chainId}`, assets);
 
       assets.forEach((asset) => {
-        const chainBalance = Object.values(state.balances[chainName]);
+        const chainBalance: Array<AssetWithBalance> = Object.values(
+          state.balances[chainId]
+        );
         const balance = chainBalance.find(
           (balance) => balance.base === asset.denom
         );
         console.log(`[updateBalance]`, balance);
         if (balance) {
-          state.balances[chainName][balance['symbol']] = {
-            ...state.balances[chainName][balance['symbol']],
+          state.balances[chainId][balance['symbol']] = {
+            ...state.balances[chainId][balance['symbol']],
             balance: asset.amount,
           };
         } else {
@@ -80,17 +91,23 @@ export const chainSlice = createSlice({
     },
     updateStakes(state: ChainSliceState, action) {
       console.debug(`[updateStakes] Updating stakes`, action.payload);
-      const { chainName, stakes, totalStake } = action.payload;
+      const { chainId, stakes, totalStake } = action.payload;
       console.debug(`[updateStakes] total ${totalStake}`);
-      state.delegations[chainName] = stakes;
-      state.networks[chainName].staked = totalStake;
+      state.delegations[chainId] = stakes;
+      state.networks[chainId].staked = totalStake;
 
       return state;
     },
     updateRewards(state: ChainSliceState, action) {
       console.debug(`[updateRewards] Updating rewards`, action.payload);
-      const { chainName, reward } = action.payload;
-      state.networks[chainName].rewards = reward;
+      const { chainId, reward } = action.payload;
+      state.networks[chainId].rewards = reward;
+      return state;
+    },
+    updateGovernanceProposalByChain(state: ChainSliceState, action) {
+      console.debug(`[updateGovernanceProposalByChain] Updating proposals`);
+      const { chainId, proposals } = action.payload;
+      state.proposals[chainId] = proposals;
       return state;
     },
   },
@@ -102,12 +119,39 @@ export const {
   updateCurrentChainsAndBalances,
   updateStakes,
   updateRewards,
+  updateGovernanceProposalByChain,
 } = chainSlice.actions;
 
 export const selectChains = (state: AppState): SnapNetworks =>
   state.chains.networks;
+export const selectChainByChainId = (chainId: string) => (state: AppState) => {
+  return state.chains.networks[chainId];
+};
+
 export const selectBalances = (state: AppState): SnapBalances =>
   state.chains.balances;
+export const selectBalancesByChainId =
+  (chainId: string) => (state: AppState) => {
+    return state.chains.balances[chainId];
+  };
+
 export const selectDelegations = (state: AppState): SnapDelegations =>
   state.chains.delegations;
+export const selectDelegationsByChainId =
+  (chainId: string) => (state: AppState) => {
+    return state.chains.delegations[chainId];
+  };
+
 export const selectChainsAndBalances = (state: AppState) => state.chains;
+export const selectChainsAndBalancesByChainId =
+  (chainId: string) => (state: AppState) => {
+    return {
+      balances: state.chains.balances[chainId],
+      networks: state.chains.networks[chainId],
+    };
+  };
+export const selectProposals = (state: AppState) => state.chains.proposals;
+export const selectProposalsByChainId =
+  (chainId: string) => (state: AppState) => {
+    return state.chains.proposals[chainId];
+  };

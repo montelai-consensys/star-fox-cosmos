@@ -13,7 +13,7 @@ import { AppState } from '../store';
 const initialState: TendermintSnapState = {
   snapId: siteConfig.snapId,
   snapVersion: siteConfig.snapVersion,
-  currentChain: null,
+  currentChainId: null,
   currentAddress: '',
   ready: true,
   actions: {},
@@ -27,7 +27,7 @@ export const snapSlice = createSlice({
       state = {
         ...state,
         currentAddress: action.payload['currentAddress'],
-        currentChain: action.payload['currentChain'],
+        currentChainId: action.payload['currentChainId'],
       };
       return state;
     },
@@ -80,6 +80,7 @@ export const snapSlice = createSlice({
 export const { changeNetwork, getBalance, sendToken, getAddress, getChain } =
   snapSlice.actions;
 
-export const selectSnapState = (state: AppState) => state.snap;
+export const selectSnapState = (state: AppState): TendermintSnapState =>
+  state.snap;
 export const selectSnapCurrentAddress = (state: AppState): string =>
   state.snap.currentAddress;

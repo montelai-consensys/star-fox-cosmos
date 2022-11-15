@@ -8,27 +8,26 @@ import { BigNumber } from 'bignumber.js';
 export const getStakesAction = createAsyncThunk(
   'actions/chains/getStakes',
   async (balanceQuery: BalanceQuery, thunkAPI) => {
-    const { chainName, address } = balanceQuery;
+    const { chainId, address } = balanceQuery;
     console.debug(
-      `[refreshBalanceAction] Getting balances for ${chainName} ${address}`
+      `[refreshBalanceAction] Getting balances for ${chainId} ${address}`
     );
 
     const delegations = await getDelegationsByAddress(
-      chainName,
+      chainId,
       address, //'osmo1qc99y4t293llhaukk6lq74cq8ul38e9djqyrlu',
       {} as Pagination
     );
 
-    const totalStake = delegations.delegation_responses.reduce(
-      (total, delegation) => {
+    const totalStake = delegations.delegation_responses
+      .reduce((total, delegation) => {
         return total.plus(delegation.balance.amount);
-      },
-      new BigNumber(0)
-    );
+      }, new BigNumber(0))
+      .toString();
 
     thunkAPI.dispatch(
       updateStakes({
-        chainName,
+        chainId,
         stakes: delegations.delegation_responses,
         totalStake,
       })

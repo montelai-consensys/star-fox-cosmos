@@ -8,31 +8,31 @@ import {
     TabPanel,
     TabList,
     Tab,
-    Button,
     Text,
+    Button,
     useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { changeNetworkAction } from '../../store/actions/snap/changeNetwork';
-import { useEffect,  useState } from 'react';
-import { useMetamaskFlask } from '../../connector/metamask';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { Debug } from '../../components/debug/debug';
-import { ChainDescription } from '../../components/chain/chainDescription';
-import { selectSnapState } from '../../store/slices/snap.slice';
-import { setCurrentNetworkAction } from '../../store/actions/snap/getNetwork';
-import { selectChains } from '../../store/slices/chain.slice';
+import { changeNetworkAction } from '../../../store/actions/snap/changeNetwork';
+import { useEffect} from 'react';
+import { useMetamaskFlask } from '../../../connector/metamask';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { Debug } from '../../../components/debug/debug';
+import { ChainDescription } from '../../../components/chain/chainDescription';
+import { selectSnapState } from '../../../store/slices/snap.slice';
+import { setCurrentNetworkAction } from '../../../store/actions/snap/getNetwork';
+import { selectChains } from '../../../store/slices/chain.slice';
 import { SnapNetworks } from '@consensys/star-fox-sdk';
-import { getChainsAndBalancesAction } from '../../store/actions/chain/getChainsAndBalances';
-import { BalancePanel } from '../../components/balance-panel/balance-panel';
-import { AssetsPanel } from '../../components/assets/assets';
-import { StakePanel } from '../../components/validators/stake-panel';
-import {SendModal} from '../../components/send/send-modal';
+import { getChainsAndBalancesAction } from '../../../store/actions/chain/getChainsAndBalances';
+import { BalancePanel } from '../../../components/balance-panel/balance-panel';
+import { AssetsPanel } from '../../../components/assets/assets';
+import { StakePanel } from '../../../components/validators/stake-panel';
+import {SendModal} from '../../../components/send/send-modal';
+import {GovernancePanel} from '../../../components/proposals/governance-panel';
 
 const Chain = () => {
     const router = useRouter();
-    const { chain_id: chainName } = router.query;
-    const [error, setError] = useState<string>('');
+    const { chain_id: chainId } = router.query;
     const flask = useMetamaskFlask();
     const dispatch = useAppDispatch();
     const snapState = useAppSelector(selectSnapState);
@@ -40,32 +40,31 @@ const Chain = () => {
     const {onOpen, onClose, isOpen} = useDisclosure()
 
     useEffect(() => {
-        if (!chainState || !chainState[chainName as string]) {
+        if (!chainState || !chainState[chainId as string]) {
             console.debug(`[Chain_Id] Restoring chain reducer`);
             //refresh the chain state lost on rehydrate
             dispatch(getChainsAndBalancesAction());
         }
-    }, []);
+    }, [chainState, chainId]);
 
     useEffect(() => {
-        if (flask.provider && chainName) {
-            console.log(`[chain] ${chainName}`);
-            if (!flask.provider) setError('[Flask Eror] Unable to get provider to flask');
+        if (flask.provider && chainId) {
+            console.log(`[chain] ${chainId}`);
 
-            if (!snapState.currentChain) {
+            if (!snapState.currentChainId) {
                 dispatch(setCurrentNetworkAction());
             } else {
                 dispatch(
                     changeNetworkAction({
-                        chainName: (chainName as string).toLowerCase()
+                        chainId: (chainId as string).toLowerCase()
                     })
                 );
             }
         }
         //get account state
-    }, [flask, chainName]);
+    }, [flask, chainId]);
 
-    if (!chainName || !chainState[chainName as string]) {
+    if (!chainId || !chainState[chainId as string]) {
         return <Spinner />;
     }
 
@@ -73,8 +72,8 @@ const Chain = () => {
     return (
         <Flex display="flex" width="100%">
             <VStack width={'100%'}>
-                <ChainDescription chainName={chainName} />
-                <BalancePanel chainName={chainName} />
+                <ChainDescription chainId={chainId} />
+                <BalancePanel chainId={chainId} />
                 <HStack>
                     <Button onClick={onOpen} marginRight={5}>
                         Transfer
@@ -92,17 +91,17 @@ const Chain = () => {
 
                     <TabPanels>
                         <TabPanel>
-                            <AssetsPanel chainName={chainName} />
+                            <AssetsPanel chainId={chainId} />
                         </TabPanel>
                         <TabPanel>
-                            <StakePanel chainName={chainName} />
+                            <StakePanel chainId={chainId} />
                         </TabPanel>
 
-                        <TabPanel>Todo</TabPanel>
+                        <TabPanel><GovernancePanel/></TabPanel>
                     </TabPanels>
                 </Tabs>
                 <HStack>
-                    <Text>{chainName}</Text>
+                    <Text>{chainId}</Text>
                     <Debug />
                 </HStack>
             </VStack>
@@ -111,3 +110,4 @@ const Chain = () => {
 };
 
 export default Chain;
+

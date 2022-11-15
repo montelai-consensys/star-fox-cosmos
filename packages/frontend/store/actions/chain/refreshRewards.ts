@@ -6,13 +6,13 @@ import { updateRewards } from '../../slices/chain.slice';
 export const refreshRewardsAction = createAsyncThunk(
   'actions/chains/refreshRewards',
   async (balanceQuery: BalanceQuery, thunkAPI) => {
-    const { chainName, address } = balanceQuery;
+    const { chainId, address } = balanceQuery;
     console.debug(
-      `[refreshRewardsAction] Getting rewards for ${chainName} ${address}`
+      `[refreshRewardsAction] Getting rewards for ${chainId} ${address}`
     );
 
     const rewardsResponse = await getRewardsByAddress(
-      chainName,
+      chainId,
       address //'osmo1qc99y4t293llhaukk6lq74cq8ul38e9djqyrlu'
     );
 
@@ -21,7 +21,7 @@ export const refreshRewardsAction = createAsyncThunk(
 
     thunkAPI.dispatch(
       updateRewards({
-        chainName,
+        chainId,
         reward: totalRewards,
       })
     );

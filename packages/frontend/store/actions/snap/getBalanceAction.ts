@@ -8,10 +8,10 @@ export const getBalanceAction = createAsyncThunk(
   'actions/snaps/getBalance',
   async (getBalanceAction: BalanceQuery, thunkAPI) => {
     const flask = await getWalletProvider();
-    const { chainName, address, denom } = getBalanceAction;
+    const { chainId, address, denom } = getBalanceAction;
 
     console.debug(
-      `[getBalanceAction] Getting balance for ${address} on chain ${chainName}`,
+      `[getBalanceAction] Getting balance for ${address} on chain ${chainId}`,
       getBalanceAction
     );
 
@@ -20,8 +20,8 @@ export const getBalanceAction = createAsyncThunk(
       params: [
         siteConfig.snapId,
         {
-          method: 'getBalance',
-          params: { chainName, address, denom },
+          method: 'starFoxSnap_getBalance',
+          params: { chainId, address, denom },
         },
       ],
     })) as BalanceQueryResponse;

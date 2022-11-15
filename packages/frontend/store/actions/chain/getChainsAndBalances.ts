@@ -15,7 +15,7 @@ export const getChainsAndBalancesAction = createAsyncThunk(
       params: [
         siteConfig.snapId,
         {
-          method: 'snap_getChainsAndBalances',
+          method: 'starFoxSnap_getChainsAndBalances',
         },
       ],
     })) as CurrentChainsAndBalances;

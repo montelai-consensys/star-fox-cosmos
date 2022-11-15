@@ -5,16 +5,16 @@ import { getWalletProvider } from '../../../connector/metamask';
 import { changeNetwork } from '../../slices/snap.slice';
 
 interface ChangeNetworkActionParam {
-  chainName: string;
+  chainId: string;
 }
 
 export const changeNetworkAction = createAsyncThunk(
   'actions/snap/changeNetwork',
   async (changeNetworkActionParam: ChangeNetworkActionParam, thunkAPI) => {
     const flask = await getWalletProvider();
-    const { chainName } = changeNetworkActionParam;
+    const { chainId } = changeNetworkActionParam;
     console.debug(
-      `[changeNetworkAction] Changing to ${chainName}`,
+      `[changeNetworkAction] Changing to ${chainId}`,
       changeNetworkActionParam
     );
 
@@ -23,8 +23,8 @@ export const changeNetworkAction = createAsyncThunk(
       params: [
         siteConfig.snapId,
         {
-          method: 'changeNetwork',
-          params: { chainName },
+          method: 'starFoxSnap_changeNetwork',
+          params: { chainId },
         },
       ],
     })) as ChangeNetworkPayload;
