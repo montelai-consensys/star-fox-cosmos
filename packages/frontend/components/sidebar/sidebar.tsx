@@ -10,112 +10,64 @@ import {
     Icon,
     Text,
     HStack,
-    useDisclosure
+    useDisclosure,
+    Switch
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { Logo } from './logo';
 import { SidebarRow } from './row';
 import { chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
-import { getTokenImageURI } from '@consensys/star-fox-sdk';
+import { getNativeTokenImageURI } from '@consensys/star-fox-sdk';
 import { GiChaingun } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
 import { BiTransfer } from 'react-icons/bi';
-import {SendModal} from '../send/send-modal';
+import { SendModal } from '../send/send-modal';
+import {CrossChainSendModal} from '../send/cross-chain-send-modal';
+import {SidebarChainRow} from './chain-row';
+import {useState} from 'react';
+import {AccountSidebar} from './account-sidebar';
 
 export const Sidebar = () => {
     const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenSend, onOpen: onOpenSend, onClose: onCloseSend} = useDisclosure();
+    const {
+        isOpen: isOpenCrossChainSend,
+        onOpen: onOpenCrossChainSend,
+        onClose: onCloseCrossChainSend
+    } = useDisclosure();
+    const [isTestnetSwitch, setTestnetSwitch] = useState(false)
 
     const productionChains = chains.filter(
-        chain => chain.network_type === 'mainnet' && getTokenImageURI(chain.chain_name)
+        chain => chain.network_type === 'mainnet' && getNativeTokenImageURI(chain.chain_id)
     );
     const testnetChains = chains.filter(
-        chain => chain.network_type !== 'mainnet' && getTokenImageURI(chain.chain_name)
+        chain => chain.network_type !== 'mainnet' && getNativeTokenImageURI(chain.chain_id)
     );
-    const showTestnets = () => {
+    const showChains = (chainType: string, chains:Array<Chain>) => {
         return (
             <>
-                <Accordion allowToggle>
+                <Accordion allowToggle overflowY="hidden">
                     <AccordionItem>
                         <h2>
                             <AccordionButton>
                                 <Box flex="1" textAlign="left">
-                                    Testnets
+                                {chainType}
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
                         </h2>
                         <AccordionPanel>
-                            {testnetChains.map((chain: Chain) => {
+                            {chains.map((chain: Chain) => {
                                 return (
-                                    <SidebarRow
+                                    <SidebarChainRow
                                         key={chain.chain_id}
                                         isSelected={false}
                                         chain={chain}
-                                        imageUrl={getTokenImageURI(chain.chain_name)}
+                                        imageUrl={getNativeTokenImageURI(chain.chain_id)}
                                         chainName={chain.chain_name}
                                         onClick={() =>
-                                            router.push(`/chain/${chain.chain_name}`)
-                                        }
-                                    />
-                                );
-                            })}
-                        </AccordionPanel>
-                    </AccordionItem>
-                </Accordion>
-            </>
-        );
-    };
-
-    const showMainnets = () => {
-        return (
-            <>
-                <Accordion allowToggle>
-                    <AccordionItem>
-                        <h2>
-                            <AccordionButton>
-                                <HStack flex="1" textAlign="left">
-                                    <Icon as={GiChaingun} />
-                                    <Text>Chains</Text>
-                                </HStack>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </h2>
-                        <SidebarRow
-                            chain={productionChains.find(
-                                chain => chain.chain_name === 'cosmoshub'
-                            )}
-                            isSelected={true}
-                            imageUrl={getTokenImageURI('cosmoshub')}
-                            chainName="cosmoshub"
-                            onClick={chainId => {
-                                router.push(`/chain/${chainId}`);
-                            }}
-                        />
-                        <SidebarRow
-                            chain={productionChains.find(
-                                chain => chain.chain_name === 'osmosis'
-                            )}
-                            isSelected={false}
-                            imageUrl={getTokenImageURI('osmosis')}
-                            chainName="osmosis"
-                            onClick={chainId => {
-                                router.push(`/chain/${chainId}`);
-                            }}
-                        />
-
-                        <AccordionPanel>
-                            {productionChains.map((chain: Chain) => {
-                                return (
-                                    <SidebarRow
-                                        key={chain.chain_id}
-                                        isSelected={false}
-                                        chain={chain}
-                                        imageUrl={getTokenImageURI(chain.chain_name)}
-                                        chainName={chain.chain_name}
-                                        onClick={() =>
-                                            router.push(`/chain/${chain.chain_name}`)
+                                            router.push(`/chain/${chain.chain_id}`)
                                         }
                                     />
                                 );
@@ -129,30 +81,41 @@ export const Sidebar = () => {
 
     return (
         <VStack
-            bg="#e5e7eb"
+            bg="#fefefe"
             width={285}
             height="100%"
             alignItems="flex-start"
             minWidth={285}
             flex={1}
-            overflowY="scroll"
+            paddingX={3}
+            borderRight="1px solid #dde3f7"
         >
             <Logo />
+            <AccountSidebar/>
             <Divider />
-            <HStack flex="1" textAlign="left" onClick={() => router.push('/')}>
+            <HStack  textAlign="left" color="#546198" _hover={{color:"#29325d"}} onClick={() => router.push('/')}>
                 <Icon as={AiFillHome} />
-                <Text>Home</Text>
+                <Text>Spaceship Hub</Text>
             </HStack>
-            <HStack flex="1" textAlign="left" onClick={()=>onOpen()}>
+            <HStack  textAlign="left" color="#546198" _hover={{color:"#29325d"}} onClick={() => onOpenSend()} >
                 <Icon as={BiTransfer} />
                 <Text>Send</Text>
-                <SendModal onOpen={onOpen} onClose={onClose} isOpen={isOpen}/>
+                <SendModal onOpen={onOpenSend}  onClose={onCloseSend} isOpen={isOpenSend} />
+            </HStack>
+            <HStack  textAlign="left" color="#546198" _hover={{color:"#29325d"}} onClick={() => onOpenCrossChainSend()}>
+                <Icon as={BiTransfer} />
+                <Text>Send Cross Chain</Text>
+                <CrossChainSendModal
+                    onOpen={onOpenCrossChainSend}
+                    onClose={onCloseCrossChainSend}
+                    isOpen={isOpenCrossChainSend}
+                />
             </HStack>
 
-            <Divider />
-            {showMainnets()}
+            {showChains("Networks", productionChains)}
 
-            {process.env.NODE_ENV === 'development' && showTestnets()}
+            {isTestnetSwitch && showChains("Testnet", testnetChains)}
+            <HStack justifySelf="flex-end"><Text>Show Testnets</Text><Switch isChecked={isTestnetSwitch} onChange={() => setTestnetSwitch(!isTestnetSwitch)}/></HStack>
         </VStack>
     );
 };

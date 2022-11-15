@@ -19,7 +19,7 @@ import {selectSnapState} from 'packages/frontend/store/slices/snap.slice';
 import {useAppSelector} from 'packages/frontend/store/store';
 import { useState } from 'react';
 
-export const SendModal = ({  onOpen, onClose, isOpen }) => {
+export const CrossChainSendModal = ({  onOpen, onClose, isOpen }) => {
     const flask = useMetamaskFlask();
     const snapState = useAppSelector(selectSnapState)
 
@@ -28,6 +28,7 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
     const [memo, setMemo] = useState(null);
     const [sending, setSending] = useState(false);
     const [transferResult, setTransferResult] = useState(null);
+
     const handleSend = async e => {
         event.preventDefault();
         setTransferResult(null);
@@ -37,9 +38,9 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
             params: [
                 siteConfig.snapId,
                 {
-                    method: 'starFoxSnap_transfer',
+                    method: 'starFoxSnap_ibcTransfer',
                     params: {
-                        chainName: snapState.currentChain,
+                        chainId: snapState.currentChainId,
                         amount: amountToSend,
                         recipient: destinationAddress,
                         memo: memo,
@@ -58,7 +59,7 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Transfer</ModalHeader>
+                    <ModalHeader>Cross Chain Transfer</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <FormControl>
@@ -124,3 +125,4 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
         </>
     );
 };
+
