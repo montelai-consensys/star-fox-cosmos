@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import { Layout } from '../components/layout';
-import { Box, ChakraProvider} from '@chakra-ui/react';
+import { Flex, ChakraProvider} from '@chakra-ui/react';
 import { MetamaskProvider } from '../connector/metamask';
 import { persistor, store } from '../store/store';
 import { Provider } from 'react-redux';
@@ -10,7 +10,7 @@ import '../styles/globals.css';
 function MyApp({ Component, pageProps }: AppProps) {
 
     return (
-        <Box>
+        <Flex flex="1" justifyContent='center' bg="#fcfcfc">
             <ChakraProvider>
                 <MetamaskProvider>
                     <Provider store={store}>
@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     </Provider>
                 </MetamaskProvider>
             </ChakraProvider>
-        </Box>
+        </Flex>
     );
 }
 
