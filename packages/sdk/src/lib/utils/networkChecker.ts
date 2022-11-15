@@ -12,7 +12,7 @@ export function validateNetwork(chainId: string) {
 }
 
 export function getNetworkRpc(chainId: string): string {
-  const chain = chains.find(({ chain_id }) => chain_id === chainId);
+  const chain = getChain(chainId);
   const rpcs = chain!.apis!.rpc;
   if (!rpcs)
     throw new Error(`[getNetworkRpc] Unable to find rpcs for chain ${chainId}`);

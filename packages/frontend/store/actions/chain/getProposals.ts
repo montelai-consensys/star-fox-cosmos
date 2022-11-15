@@ -10,9 +10,9 @@ import {
 export const getProposalsAction = createAsyncThunk(
   'actions/chains/getProposals',
   async (governanceProposalQuery: GovernanceProposalQuery, thunkAPI) => {
-    const { chainName } = governanceProposalQuery;
+    const { chainId } = governanceProposalQuery;
     console.debug(
-      `[getProposalsAction] Getting proposals for chain: ${chainName}`
+      `[getProposalsAction] Getting proposals for chain: ${chainId}`
     );
 
     const governanceProposalsResponse: GovernanceProposalsResponse =
@@ -39,7 +39,7 @@ export const getProposalsAction = createAsyncThunk(
 
     thunkAPI.dispatch(
       updateGovernanceProposalByChain({
-        chainName,
+        chainId,
         proposals: proposals.reverse(),
       })
     );

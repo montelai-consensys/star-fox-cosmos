@@ -2,7 +2,7 @@ import { Pagination, PaginationResponse } from '../pagination';
 import { Votes } from './votes';
 
 export interface GovernanceProposalQuery {
-  chainName: string;
+  chainId: string;
   proposal_status: ProposalStatus;
   voter?: string; //address of voter
   depositor?: string; // depositors of the proposals

@@ -29,7 +29,7 @@ export const getGovernanceProposals = async (
   try {
     const response: AxiosResponse = await axios.get(
       GET_ALL_GOVERNANCE_PROPOSALS(
-        getChainRestEndpoint(governanceProposalQuery.chainName)
+        getChainRestEndpoint(governanceProposalQuery.chainId)
       ),
       {
         params: governanceProposalQuery.paginationParams,

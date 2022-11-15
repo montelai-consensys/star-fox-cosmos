@@ -8,7 +8,7 @@ import { ProposalList } from './proposal-list';
 
 export const GovernancePanel = () => {
     const router = useRouter();
-    const chainName = router.query['chain_id'] as string;
+    const { chain_id: chainId} = router.query;
     const dispatch = useAppDispatch();
     const [proposalStatusFilter, setProposalStatusFilter] = useState<ProposalStatus>(
         ProposalStatus.UNSPECIFIC
@@ -16,17 +16,17 @@ export const GovernancePanel = () => {
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (chainName) {
+        if (chainId) {
             setLoading(true);
             dispatch(
                 getProposalsAction({
-                    chainName,
+                    chainId: chainId as string,
                     proposal_status: ProposalStatus.UNSPECIFIC
                 })
             );
             setLoading(false);
         }
-    }, [chainName]);
+    }, [chainId]);
 
     return (
         <Flex direction="column">

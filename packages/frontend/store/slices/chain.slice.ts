@@ -15,7 +15,7 @@ import { AppState } from '../store';
 const populateProposals = (): Record<string, Array<GovernanceProposal>> => {
   const proposals = {};
   chains.forEach((chain) => {
-    proposals[chain.chain_name] = [];
+    proposals[chain.chain_id] = [];
   });
 
   return proposals;
@@ -39,7 +39,7 @@ export const chainSlice = createSlice({
         ...state,
         networks: {
           ...state.networks,
-          [chain.chain_name]: chain,
+          [chain.chain_id]: chain,
         },
       };
       return state;
