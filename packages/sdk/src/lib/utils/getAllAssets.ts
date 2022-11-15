@@ -61,9 +61,10 @@ export const getSnapSingleNetworkBalances = (
       base: asset.base,
       name: asset.name,
       symbol: asset.symbol,
+      display: asset.display,
       //@ts-ignore
       decimal: asset.denom_units.find(
-        (denom) => denom.denom === asset.symbol.toLowerCase()
+        (denom) => denom.denom.toLowerCase() === asset.display.toLowerCase()
       )?.exponent,
       balance: '0',
       imageURI: uri as string,
