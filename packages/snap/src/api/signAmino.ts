@@ -2,7 +2,7 @@ import {
   AminoMsgDto,
   MetamaskState,
   SignAminoPayload,
-} from '../../../sdk/src/index';
+} from '@consensys/star-fox-sdk';
 import { Secp256k1Wallet, AminoSignResponse, StdSignDoc } from '@cosmjs/amino';
 import { SnapProvider } from '@metamask/snap-types';
 import { chains } from 'chain-registry';
@@ -16,14 +16,14 @@ export async function signAmino(
 ): Promise<AminoSignResponse> {
   const { signerAddress, signDocDto } = signAminoPayload;
 
-  if (signDocDto.chain_id !== state.currentChain.chain_id) {
-    const chainName = chains.find(
+  if (signDocDto.chain_id !== state.currentChainId) {
+    const chainId = chains.find(
       (chain) => chain.chain_id === signDocDto.chain_id
-    ).chain_name;
+    ).chain_id;
 
-    if (!chainName) throw new Error(`Unknown Chain ${signDocDto.chain_id}`);
+    if (!chainId) throw new Error(`Unknown Chain ${signDocDto.chain_id}`);
     const [updatedState] = await changeNetwork(wallet, state, {
-      chainName,
+      chainId,
     });
     state = updatedState;
   }

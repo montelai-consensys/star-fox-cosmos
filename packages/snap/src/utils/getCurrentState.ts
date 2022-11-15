@@ -3,7 +3,7 @@ import {
   MetamaskState,
   SnapBalances,
   SnapNetworks,
-} from '../../../sdk/src/index';
+} from '@consensys/star-fox-sdk';
 
 export const getCurrentState = (
   state: MetamaskState

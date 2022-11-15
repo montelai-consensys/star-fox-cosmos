@@ -1,4 +1,4 @@
-import { MetamaskState } from '../../../sdk/src/index';
+import { MetamaskState } from '@consensys/star-fox-sdk';
 import {
   SigningStargateClient,
   calculateFee,

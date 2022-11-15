@@ -8,13 +8,13 @@ export const getAllNetworks = (base64PublicKey: string): SnapNetworks => {
   const snapNetworks: SnapNetworks = {};
   for (let i = 0; i < chains.length; i++) {
     try {
-      snapNetworks[chains[i].chain_name] = generateChainWithAddress(
-        chains[i].chain_name,
+      snapNetworks[chains[i].chain_id] = generateChainWithAddress(
+        chains[i].chain_id,
         base64PublicKey
       );
     } catch (e) {
       console.debug(
-        `[getAllNetworks] Unable to get chain ${chains[i].chain_name}`
+        `[getAllNetworks] Unable to get chain ${chains[i].chain_id}`
       );
     }
   }
@@ -23,10 +23,10 @@ export const getAllNetworks = (base64PublicKey: string): SnapNetworks => {
 };
 
 const generateChainWithAddress = (
-  chainName: string,
+  chainId: string,
   base64PublicKey: string
 ): FormattedChainWithAddress => {
-  const chain = formatChain(getChain(chainName));
+  const chain = formatChain(getChain(chainId));
   const address = pubkeyToAddress(
     {
       type: 'tendermint/PubKeySecp256k1',

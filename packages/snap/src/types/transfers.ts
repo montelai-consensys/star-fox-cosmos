@@ -2,7 +2,7 @@ import joi from 'joi';
 import Long from 'long';
 
 export interface TransferPayload {
-  chainName: string;
+  chainId: string;
   recipient: string;
   amount: string;
   fee;

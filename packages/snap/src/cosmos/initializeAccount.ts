@@ -6,7 +6,7 @@ import {
   formatChain,
   getAllNetworks,
   initializeSnapDelegations,
-} from '../../../sdk/src/index';
+} from '../../../sdk/src';
 import { SnapProvider } from '@metamask/snap-types';
 import { DirectSecp256k1Wallet } from '@cosmjs/proto-signing';
 
@@ -20,7 +20,7 @@ export async function initializeAccount(
       curve: 'secp256k1',
     },
   });
-  const cosmoshub = formatChain(getChain('cosmoshub'));
+  const cosmoshub = formatChain(getChain('cosmoshub-4'));
   const secp256Wallet = await DirectSecp256k1Wallet.fromKey(
     Buffer.from(cosmosNode['privateKey'], 'hex'),
     cosmoshub.bech32_prefix
@@ -49,7 +49,7 @@ export async function initializeAccount(
   //generate wallets for all supported chains
   const newState: MetamaskState = {
     currentAddress: cosmosAddress,
-    currentChain: 'cosmoshub',
+    currentChainId: 'cosmoshub-4',
     networks,
     balances,
     transactions,

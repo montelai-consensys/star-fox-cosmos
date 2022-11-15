@@ -4,6 +4,9 @@ import {
   sendTransfer,
   changeNetwork,
   sendIBCTransfer,
+  signAmino,
+  signDirect,
+  getKey,
 } from './api';
 import {
   BalanceQuery,
@@ -14,15 +17,12 @@ import {
   SignDirectPayload,
   TransferPayload,
 } from '@consensys/star-fox-sdk';
-//} from '../../sdk/src/index';
 import {
   showConfirmationDialog,
   ConfirmationDialogContent,
 } from './utils/confirmation';
 import { initializeAccount } from './cosmos/initializeAccount';
-import { signDirect } from './api/signDirect';
 import { getCurrentState } from './utils/getCurrentState';
-import { signAmino } from './api/signAmino';
 
 declare const wallet: SnapProvider;
 
@@ -62,22 +62,23 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
     case 'starFoxSnap_signDirect':
       console.debug('[signDirect] Starting');
 
-      const response = await signDirect(
+      return await signDirect(
         wallet,
         state,
         request.params as unknown as SignDirectPayload
       );
-      return response;
     case 'starFoxSnap_signAmino':
       console.debug('[signAmino] Starting');
-      const response = await signAmino(
+      return await signAmino(
         wallet,
         state,
-        request.params as SignAminoPayload
+        request.params as unknown as SignAminoPayload
       );
-      return;
 
     // Convenience Methods of snap
+
+    case 'starFoxSnap_getKey':
+      return await getKey(wallet, state, request.params);
     case 'starFoxSnap_getChainsAndBalances':
       console.debug('[getChainsAndBalances] Starting');
 
@@ -86,7 +87,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       console.debug('[getCurrentNetwork] Starting');
 
       return {
-        currentChain: state.currentChain,
+        currentChainId: state.currentChainId,
         currentAddress: state.currentAddress,
       };
     case 'starFoxSnap_addNetwork':
@@ -142,13 +143,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       return;
     case 'starFoxSnap_reset':
       console.debug('[reset] Starting');
-
-      console.log('Resetting state');
       return await wallet.request({
         method: 'snap_manageState',
         params: ['clear'],
       });
     default:
-      throw new Error('Method not found.');
+      throw new Error(`Method ${request.method} not found.`);
   }
 };

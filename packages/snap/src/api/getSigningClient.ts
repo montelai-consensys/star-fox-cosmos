@@ -1,6 +1,6 @@
 import { DirectSecp256k1Wallet } from '@cosmjs/proto-signing';
 import { SigningStargateClient } from '@cosmjs/stargate';
-import { MetamaskState } from '../../../sdk/src/index';
+import { MetamaskState } from '@consensys/star-fox-sdk';
 import { SnapProvider } from '@metamask/snap-types';
 
 export async function getSigningClient(

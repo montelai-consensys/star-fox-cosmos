@@ -2,7 +2,7 @@ import {
   MetamaskState,
   SignDirectPayload,
   SignDirectResponseDto,
-} from '../../../sdk/src/index';
+} from '@consensys/star-fox-sdk';
 import {
   DirectSecp256k1Wallet,
   DirectSignResponse,
@@ -27,14 +27,9 @@ export async function signDirect(
     textAreaContent: `Data: ${signDocDto.bodyBytes}`,
   });
 
-  if (signDocDto.chainId !== state.currentChain.chain_id) {
-    const chainName = chains.find(
-      (chain) => chain.chain_id === signDocDto.chainId
-    ).chain_name;
-
-    if (!chainName) throw new Error(`Unknown Chain ${signDocDto.chainId}`);
+  if (signDocDto.chainId !== state.currentChainId) {
     const [updatedState] = await changeNetwork(wallet, state, {
-      chainName,
+      chainId: signDocDto.chainId,
     });
     state = updatedState;
   }
@@ -60,7 +55,7 @@ export async function signDirect(
   const directSecp256k1Wallet: DirectSecp256k1Wallet =
     await DirectSecp256k1Wallet.fromKey(
       Buffer.from(cosmosNode['privateKey'], 'hex'),
-      state.currentChain.bech32_prefix
+      state.networks[signDocDto.chainId].bech32_prefix
     );
 
   const signedDocResponse: DirectSignResponse =

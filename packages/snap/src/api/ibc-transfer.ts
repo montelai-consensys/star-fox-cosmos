@@ -16,27 +16,27 @@ export async function sendIBCTransfer(
   );
   if (error) {
     console.debug(
-      `[IBC Transfer] ${state.currentChain}: IBC schema error`,
+      `[IBC Transfer] ${state.currentChainId}: IBC schema error`,
       error
     );
   }
   const client = await getSigningClient(
     wallet,
     state,
-    ibcTransferPayload.chainName
+    ibcTransferPayload.chainId
   );
 
   const transferAmount = coin(
     ibcTransferPayload.amount,
-    state.networks[ibcTransferPayload.chainName].denom
+    state.networks[ibcTransferPayload.chainId].denom
   );
 
   //estimate gas
   const confirmation = await showConfirmationDialog(wallet, {
     prompt: 'Confirm IBC Transfer',
-    description: `Chain: ${ibcTransferPayload.chainName}`,
+    description: `Chain: ${ibcTransferPayload.chainId}`,
     textAreaContent: `To: ${ibcTransferPayload.recipient}\nFrom: ${
-      state.networks[ibcTransferPayload.chainName].address
+      state.networks[ibcTransferPayload.chainId].address
     }\nAmount: ${ibcTransferPayload.amount}\nSource Channel: ${
       ibcTransferPayload.sourceChannel
     }\nSource Port: ${ibcTransferPayload.sourcePort}`,

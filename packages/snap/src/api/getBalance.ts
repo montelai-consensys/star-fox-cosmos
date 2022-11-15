@@ -12,9 +12,9 @@ export async function getBalance(
   balanceQuery: BalanceQuery
 ): Promise<BalanceQueryResponse> {
   console.debug('[GetBalance] Query', balanceQuery);
-  const { address, denom, chainName }: BalanceQuery = balanceQuery;
-  console.log('IBC Assets', getAllIBCAssetsByChain(chainName));
-  const rpcUrl = await getNetworkRpc(chainName);
+  const { address, denom, chainId }: BalanceQuery = balanceQuery;
+  console.log('IBC Assets', getAllIBCAssetsByChain(chainId));
+  const rpcUrl = await getNetworkRpc(chainId);
 
   //create read only client
   const tendermint = await Tendermint34Client.connect(rpcUrl);

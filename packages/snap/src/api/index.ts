@@ -4,3 +4,6 @@ export * from './getSigningClient';
 export * from './ibc-transfer';
 export * from './transfer';
 export * from './changeNetwork';
+export * from './getKey';
+export * from './signAmino';
+export * from './signDirect';

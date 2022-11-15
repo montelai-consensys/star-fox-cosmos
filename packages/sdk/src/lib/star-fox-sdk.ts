@@ -15,6 +15,10 @@ import {
   AminoMsgDto,
   SignAminoPayload,
   SignDirectResponseDto,
+  KeyDto,
+  Key,
+  GetKeyParams,
+  fromKeyDto,
 } from '../types';
 import Long from 'long';
 
@@ -39,7 +43,7 @@ export class MetamaskTendermintOfflineSigner
       params: [
         this.snapId,
         {
-          method: 'getAccount',
+          method: 'starFoxSnap_getAccount',
         },
       ],
     })) as IntermediateAccountData;
@@ -79,7 +83,7 @@ export class MetamaskTendermintOfflineSigner
       params: [
         this.snapId,
         {
-          method: 'signDirect',
+          method: 'starFoxSnap_signDirect',
           params: signAminoPayload,
         },
       ],
@@ -109,7 +113,7 @@ export class MetamaskTendermintOfflineSigner
       params: [
         this.snapId,
         {
-          method: 'signDirect',
+          method: 'starFoxSnap_signDirect',
           params: signDirectPayload,
         },
       ],
@@ -144,5 +148,25 @@ export class MetamaskTendermintOfflineSigner
     };
 
     return directSignResponse;
+  }
+
+  async getKey(chainId: string): Promise<Key> {
+    const getKeyParams: GetKeyParams = {
+      chainId: chainId,
+    };
+
+    const keyDto: KeyDto = (await this.provider.request({
+      method: 'wallet_invokeSnap',
+      params: [
+        this.snapId,
+        {
+          method: 'starFoxSnap_getKey',
+          params: getKeyParams,
+        },
+      ],
+    })) as KeyDto;
+
+    const key: Key = fromKeyDto(keyDto);
+    return key;
   }
 }

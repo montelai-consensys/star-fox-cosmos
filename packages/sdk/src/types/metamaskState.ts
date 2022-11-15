@@ -2,7 +2,7 @@ import { SnapTransactions } from './transactions';
 import { GovernanceProposal } from './proposals';
 
 export interface CurrentChain {
-  currentChain: string;
+  currentChainId: string;
   currentAddress: string;
 }
 
@@ -49,6 +49,7 @@ export interface AssetWithBalance {
   decimal: number;
   symbol: string;
   balance: string | number;
+  imageURI?: string;
 }
 
 export interface CurrentChainsAndBalances {

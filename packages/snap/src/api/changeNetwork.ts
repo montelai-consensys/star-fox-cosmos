@@ -15,11 +15,11 @@ export async function changeNetwork(
   params: ChangeNetworkQuery
 ): Promise<ChangeNetworkQueryResponse> {
   console.debug('[Change Network]', params);
-  const { chainName } = params;
-  validateNetwork(chainName);
-  const chain = getChain(chainName);
+  const { chainId } = params;
+  validateNetwork(chainId);
+  const chain = getChain(chainId);
 
-  if (!chain) throw new Error(`[Change Network] Unknown chain ${chainName}`);
+  if (!chain) throw new Error(`[Change Network] Unknown chain ${chainId}`);
 
   const formattedChain = formatChain(chain);
 
@@ -44,17 +44,17 @@ export async function changeNetwork(
     ...state,
     networks: {
       ...state.networks,
-      [formattedChainWithAddress.chain_name]: formattedChainWithAddress,
+      [formattedChainWithAddress.chain_id]: formattedChainWithAddress,
     },
     transactions: {
       ...state.transactions,
-      [formattedChainWithAddress.chain_name]: [
-        ...(state.transactions?.[formattedChainWithAddress.chain_name]
-          ? state.transactions[formattedChainWithAddress.chain_name]
+      [formattedChainWithAddress.chain_id]: [
+        ...(state.transactions?.[formattedChainWithAddress.chain_id]
+          ? state.transactions[formattedChainWithAddress.chain_id]
           : []),
       ],
     },
-    currentChain: chainName,
+    currentChainId: chainId,
     currentAddress: chainAddress,
   };
 

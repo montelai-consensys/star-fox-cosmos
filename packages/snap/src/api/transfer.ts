@@ -13,14 +13,10 @@ export async function sendTransfer(
   transferPayload: TransferPayload
 ): Promise<DeliverTxResponse> {
   console.debug(`[Transfer]`, transferPayload);
-  validateNetwork(transferPayload.chainName);
-  const client = await getSigningClient(
-    wallet,
-    state,
-    transferPayload.chainName
-  );
+  validateNetwork(transferPayload.chainId);
+  const client = await getSigningClient(wallet, state, transferPayload.chainId);
 
-  const denom = state.networks[transferPayload.chainName].denom;
+  const denom = state.networks[transferPayload.chainId].denom;
   const transferAmount = coins(transferPayload.amount, denom);
 
   //simulate
@@ -28,9 +24,9 @@ export async function sendTransfer(
   //estimate gas
   const confirmation = await showConfirmationDialog(wallet, {
     prompt: 'Confirm Transfer',
-    description: `Chain: ${transferPayload.chainName}`,
+    description: `Chain: ${transferPayload.chainId}`,
     textAreaContent: `To: ${transferPayload.recipient}\n From: ${
-      state.networks[transferPayload.chainName].address
+      state.networks[transferPayload.chainId].address
     }\nAmount: ${transferPayload.amount} \nMemo: ${transferPayload.memo}`,
   });
 

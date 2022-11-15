@@ -3,7 +3,7 @@ import { FormattedChain, MetamaskState } from './metamaskState';
 export interface BalanceQuery {
   address: string;
   denom: string;
-  chainName: string;
+  chainId: string;
 }
 
 export interface BalanceQueryResponse {
@@ -12,7 +12,7 @@ export interface BalanceQueryResponse {
 }
 
 export interface ChangeNetworkQuery {
-  chainName: string;
+  chainId: string;
 }
 
 export type ChangeNetworkQueryResponse = [MetamaskState, ChangeNetworkPayload];
