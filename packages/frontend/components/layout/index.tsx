@@ -1,12 +1,14 @@
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex, Spinner, useDisclosure } from '@chakra-ui/react';
 import { Sidebar } from '../sidebar/sidebar';
 import { ReactNode, useEffect } from 'react';
 import { useMetamaskFlask } from '../../connector/metamask';
 import { SnapInstallAlert } from '../snap-install-modal/snap-install-modal';
+import { selectAppState, useAppSelector } from 'packages/frontend/store/store';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
     const flask = useMetamaskFlask();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const state = useAppSelector(selectAppState);
 
     useEffect(() => {
         if (
@@ -20,18 +22,26 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <Flex
             direction="row"
-            justifyContent={'center'}
+            justifyItems={'center'}
             alignItems="flex-start"
-            maxW={1200}
+            w="1200px"
+            maxW="1200px"
             height={'100%'}
             minHeight={'100%'}
+            borderRadius={5}
             display="flex"
         >
-            <Sidebar />
-            <Flex display="flex" width="100%" padding={2.5}>
-                {children}
-            </Flex>
-            <SnapInstallAlert isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+            {state._persist.rehydrated ? (
+                <>
+                    <Sidebar />
+                    <Flex display="flex" width="100%" height="100%" padding={2.5} bg="#fefefe">
+                        {children}
+                    </Flex>
+                    <SnapInstallAlert isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+                </>
+            ) : (
+                <Spinner />
+            )}
         </Flex>
     );
 };
