@@ -3,15 +3,21 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/star-fox-sdk/src",
   "projectType": "library",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*"],
+    "production": ["!{projectRoot}/**/*.spec.tsx"]
+  },
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
+      "inputs": ["{projectRoot}/**/*"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/star-fox-sdk",
-        "tsConfig": "packages/star-fox-sdk/tsconfig.lib.json",
-        "packageJson": "packages/star-fox-sdk/package.json",
-        "main": "packages/star-fox-sdk/src/index.ts"
+        "outputPath": "dist/packages/sdk",
+        "tsConfig": "packages/sdk/tsconfig.lib.json",
+        "packageJson": "packages/sdk/package.json",
+        "main": "packages/sdk/src/index.ts",
+        "generatePackageJson": true
       }
     },
     "lint": {

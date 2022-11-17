@@ -1,3 +1,3 @@
-export * from './star-fox-sdk';
+export * from './adapter';
+export * from './loadAdapter';
 export * from './utils';
-

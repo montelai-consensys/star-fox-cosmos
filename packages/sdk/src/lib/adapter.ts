@@ -12,7 +12,6 @@ import {
   SignDirectPayload,
   SignDocDto,
   SignAminoDocDto,
-  AminoMsgDto,
   SignAminoPayload,
   SignDirectResponseDto,
   KeyDto,
@@ -25,7 +24,6 @@ import Long from 'long';
 interface IntermediateAccountData {
   address: string;
   algo: Algo;
-  //base64 pubkey, flask cannot send Uint8Array
   pubkey: string;
 }
 
@@ -95,7 +93,6 @@ export class MetamaskTendermintOfflineSigner
     signerAddress: string,
     signDoc: SignDoc
   ): Promise<DirectSignResponse> {
-    //convert SignDoc to dto because Uint8Array isn't serializable
     const signDocDto: SignDocDto = {
       bodyBytes: Buffer.from(signDoc.bodyBytes).toString('base64'),
       chainId: signDoc.chainId,
