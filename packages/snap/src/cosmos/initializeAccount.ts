@@ -42,8 +42,8 @@ export async function initializeAccount(
 
   const balances = getAllNetworkBalances();
   const transactions = {};
-  Object.keys(balances).forEach((chainName) => (transactions[chainName] = []));
   const networks = getAllNetworks(base64PublicKey);
+  Object.keys(networks).forEach((chainName) => (transactions[chainName] = []));
   const delegations = initializeSnapDelegations();
 
   //generate wallets for all supported chains
@@ -57,10 +57,11 @@ export async function initializeAccount(
     publicKey: base64PublicKey,
   };
 
-  await wallet.request({
+  //TODO: Investigate the serialization error if we do not reparse state.
+  const savedState = await wallet.request({
     method: 'snap_manageState',
-    params: ['update', newState],
+    params: ['update', JSON.parse(JSON.stringify(newState))],
   });
 
-  return newState;
+  return savedState as MetamaskState;
 }
