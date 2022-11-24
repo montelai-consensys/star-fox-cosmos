@@ -4,8 +4,10 @@ import {
     Text,
     Button,
     Image,
-    Heading
+    Heading,
+    Icon
 } from '@chakra-ui/react';
+import { AiFillStepBackward } from 'react-icons/ai'
 import { getNativeTokenImageURI, getTokenImageURI, GovernanceProposal } from '@consensys/star-fox-sdk';
 import { formatISO9075, isAfter, isBefore, isDate } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -19,7 +21,8 @@ export const ProposalSummary = ({ proposal }: { proposal: GovernanceProposal }) 
 
     return (
         <VStack alignItems="flex-start" width="100%" marginBottom="32px">
-            <DepositSpinner proposal={proposal} />
+            <HStack><Icon as={AiFillStepBackward} onClick={()=> router.back()}/><DepositSpinner proposal={proposal} /></HStack>
+            
             <HStack marginTop="20px" marginBottom="32px">
                 <Image
                     src={getNativeTokenImageURI(chainId as string)}
