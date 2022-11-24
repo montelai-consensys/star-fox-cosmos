@@ -18,6 +18,7 @@ This is a metamask snap that enables metamask to interact with cosmos and other 
 | -------------- | ----- |
 | Node           | 16.\* |
 
+Request for juno testnet tokens within their discord “/verify <your juno-address> <six digits>”
 ## Folder Structure
 ```
 |-- ./packages/junoswap-interface
@@ -46,16 +47,19 @@ This is needed because alot of cosmos ecosystems' rpcs currently do not support 
 
 ```bash
 cd packages/forward-proxy
+yarn install
 yarn start
 ```
 ### Run Snap
 ```bash
 cd packages/snap
+yarn install
 yarn build && yarn serve
 ```
 
 ### Run Frontend
 ```bash
+yarn install
 yarn nx serve frontend 
 ```
 
@@ -68,6 +72,7 @@ Run this frontend interface to test out the adapter in the sdk.
 
 ```bash
 cd packages/junoswap-interface
+yarn install
 yarn dev
 ```
 
