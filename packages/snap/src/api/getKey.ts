@@ -13,18 +13,11 @@ export const getKey = async (
   state: MetamaskState,
   chainId: { chainId: string }
 ): Promise<KeyDto> => {
-  if (chainId.chainId !== state.currentChain) {
-    const changeNetworkResponse = await changeNetwork(wallet, state, {
-      chainName: chainId.chainId,
-    });
-    state = changeNetworkResponse[0];
-  }
-
-  const network: FormattedChainWithAddress = state[state.currentChain];
+  const network: FormattedChainWithAddress = state.networks[chainId.chainId];
 
   const keyDto: KeyDto = {
     chainId: network.chain_id,
-    name: state.currentChain,
+    name: 'Star Fox Snap',
     algo: network.symbol,
     bech32Address: state.currentAddress,
     base64Address: state.publicKey,
