@@ -27,7 +27,7 @@ export const StakePanel = ({ chainId }) => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {Object.keys(delegations[chainId]).map((delegation, index) => {
+                        {delegations[chainId] && Object.keys(delegations[chainId]).map((delegation, index) => {
                             return (
                                 <Stake
                                     key={`delegation-${index}`}

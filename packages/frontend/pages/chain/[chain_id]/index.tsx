@@ -43,6 +43,7 @@ const Chain = () => {
         if (!chainState || !chainState[chainId as string]) {
             console.debug(`[Chain_Id] Restoring chain reducer`);
             //refresh the chain state lost on rehydrate
+            dispatch(changeNetworkAction({chainId: chainId as string}))
             dispatch(getChainsAndBalancesAction());
         }
     }, [chainState, chainId]);
@@ -97,7 +98,7 @@ const Chain = () => {
                             <StakePanel chainId={chainId} />
                         </TabPanel>
 
-                        <TabPanel><GovernancePanel/></TabPanel>
+                        <TabPanel><GovernancePanel chainId={chainId}/></TabPanel>
                     </TabPanels>
                 </Tabs>
                 <HStack>

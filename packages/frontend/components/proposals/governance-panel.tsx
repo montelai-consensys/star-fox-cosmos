@@ -6,9 +6,7 @@ import { useAppDispatch } from 'packages/frontend/store/store';
 import { useEffect, useState } from 'react';
 import { ProposalList } from './proposal-list';
 
-export const GovernancePanel = () => {
-    const router = useRouter();
-    const { chain_id: chainId} = router.query;
+export const GovernancePanel = ({chainId}) => {
     const dispatch = useAppDispatch();
     const [proposalStatusFilter, setProposalStatusFilter] = useState<ProposalStatus>(
         ProposalStatus.UNSPECIFIC
@@ -35,4 +33,3 @@ export const GovernancePanel = () => {
     );
 };
 
-//<ProposalHeader chainName={chainName}/>

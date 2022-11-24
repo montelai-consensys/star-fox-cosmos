@@ -47,7 +47,7 @@ export const Sidebar = () => {
     const showChains = (chainType: string, chains:Array<Chain>) => {
         return (
             <>
-                <Accordion allowToggle overflowY="hidden">
+                <Accordion allowToggle >
                     <AccordionItem>
                         <h2>
                             <AccordionButton>
