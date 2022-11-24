@@ -23,15 +23,14 @@ import { VoteTotal } from './vote-total';
 import { useAppSelector } from '../../store/store';
 import { selectChainByChainId } from '../../store/slices/chain.slice';
 
-export const VoteDetail = ({ proposal }: { proposal: GovernanceProposal }) => {
-    const router = useRouter();
-    const { chain_id: chainName } = router.query;
+export const VoteDetail = ({ proposal, chainId }: { chainId: string, proposal: GovernanceProposal }) => {
+
     const { data: tally, isFetching } = useGetTallyQuery({
-        restEndpoint: getChainRestEndpoint(chainName as string),
+        restEndpoint: getChainRestEndpoint(chainId),
         proposalId: proposal.proposal_id
     });
-    const chain = useAppSelector(selectChainByChainId(chainName as string));
-    const decimals = getDecimalOfAsset(chainName as string, chain.symbol);
+    const chain = useAppSelector(selectChainByChainId(chainId));
+    const decimals = getDecimalOfAsset(chainId, chain.symbol);
 
     const loadChartItems = (
         proposal: GovernanceProposal,

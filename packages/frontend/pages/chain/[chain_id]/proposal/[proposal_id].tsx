@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 const ProposalContent = () => {
     const router = useRouter();
     const { chain_id: chainId, proposal_id } = router.query;
-    const chains = useAppSelector(selectChainByChainId(chainId as string))
+    const chain = useAppSelector(selectChainByChainId(chainId as string))
     const proposals = useAppSelector(selectProposalsByChainId(chainId as string));
     const [proposal, setProposal] = useState(null);
 
@@ -42,11 +42,11 @@ const ProposalContent = () => {
             padding="32px"
             alignItems="flex-start"
             overflowY="hidden"
-        >
+        > 
             <ProposalSummary proposal={proposal} />
-            <VoteDetail proposal={proposal} />
+            <VoteDetail proposal={proposal} chainId={chainId}/>
             <Divider />
-            <ProposalDescription chainName={chains[chainId as string].name} description={proposal.content.description} />
+            <ProposalDescription chainName={chain.chain_name} description={proposal.content.description} />
         </Flex>
     );
 };
