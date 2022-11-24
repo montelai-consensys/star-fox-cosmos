@@ -1,6 +1,8 @@
 # WIP: Star Fox Cosmos Snap
 
+## Summary
 
+This is a metamask snap that enables metamask to interact with cosmos and other tendermint chains. 
 ## TODO:
 - IBC cross chain transfers and test
 - Staking and unstaking 
