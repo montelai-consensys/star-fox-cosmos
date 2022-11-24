@@ -3,6 +3,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 import { siteConfig } from '../../config/siteConfig';
 import {
   BalanceQueryResponse,
+  ChangeNetworkPayload,
   CurrentChain,
   TendermintSnapState,
 } from '@consensys/star-fox-sdk';
@@ -24,10 +25,11 @@ export const snapSlice = createSlice({
   initialState,
   reducers: {
     changeNetwork(state: TendermintSnapState, action) {
+      const { network, address } = action.payload as ChangeNetworkPayload;
       state = {
         ...state,
-        currentAddress: action.payload['currentAddress'],
-        currentChainId: action.payload['currentChainId'],
+        currentAddress: address,
+        currentChainId: network.chain_id,
       };
       return state;
     },

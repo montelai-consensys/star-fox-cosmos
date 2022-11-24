@@ -3,12 +3,16 @@ import { Sidebar } from '../sidebar/sidebar';
 import { ReactNode, useEffect } from 'react';
 import { useMetamaskFlask } from '../../connector/metamask';
 import { SnapInstallAlert } from '../snap-install-modal/snap-install-modal';
-import { selectAppState, useAppSelector } from 'packages/frontend/store/store';
+import { selectAppState, useAppDispatch, useAppSelector } from 'packages/frontend/store/store';
+import {  selectChains } from 'packages/frontend/store/slices/chain.slice';
+import { getChainsAndBalancesAction } from 'packages/frontend/store/actions/chain/getChainsAndBalances';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
     const flask = useMetamaskFlask();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const state = useAppSelector(selectAppState);
+    const chainState = useAppSelector(selectChains)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (
@@ -18,6 +22,14 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             onOpen();
         }
     }, [flask]);
+
+    useEffect(()=>{
+if (state._persist.rehydrated && !chainState){
+    console.debug(`[Chain_Id] Restoring chain reducer`);
+    dispatch(getChainsAndBalancesAction());
+}
+
+    }, [state._persist.rehydrated, chainState])
 
     return (
         <Flex

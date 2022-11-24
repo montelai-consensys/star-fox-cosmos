@@ -9,9 +9,7 @@ export const getStakesAction = createAsyncThunk(
   'actions/chains/getStakes',
   async (balanceQuery: BalanceQuery, thunkAPI) => {
     const { chainId, address } = balanceQuery;
-    console.debug(
-      `[refreshBalanceAction] Getting balances for ${chainId} ${address}`
-    );
+    console.debug(`[getStakesAction] Getting stakes for ${chainId} ${address}`);
 
     const delegations = await getDelegationsByAddress(
       chainId,

@@ -30,6 +30,7 @@ export const changeNetworkAction = createAsyncThunk(
     })) as ChangeNetworkPayload;
 
     const changeNetworkPayload: ChangeNetworkPayload = changeNetworkResponse;
+    console.log(111, changeNetworkPayload);
 
     thunkAPI.dispatch(changeNetwork(changeNetworkPayload));
 

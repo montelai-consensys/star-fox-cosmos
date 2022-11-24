@@ -1,11 +1,17 @@
 import { Flex, Skeleton, VStack, HStack, Text, Spinner, Tooltip } from '@chakra-ui/react';
-import { selectChainByChainId } from 'packages/frontend/store/slices/chain.slice';
+import {
+    selectChainByChainId,
+    selectChains
+} from 'packages/frontend/store/slices/chain.slice';
 import { selectSnapState } from 'packages/frontend/store/slices/snap.slice';
 import { useAppSelector } from 'packages/frontend/store/store';
+import { useState, useEffect } from 'react';
 
 export const AccountSidebar = () => {
     const snapState = useAppSelector(selectSnapState);
     const chain = useAppSelector(selectChainByChainId(snapState.currentChainId));
+
+    console.debug(`[AccountSideBar] Chain:`, chain);
 
     const mininmizeText = (text: string): string => {
         if (text.length > 15) {
@@ -16,7 +22,13 @@ export const AccountSidebar = () => {
     };
 
     return (
-        <VStack width="100%" alignItems="flex-start" color="#29325d" fontSize={"14px"} lineHeight="3">
+        <VStack
+            width="100%"
+            alignItems="flex-start"
+            color="#29325d"
+            fontSize={'14px'}
+            lineHeight="3"
+        >
             {process.env.NODE_ENV !== 'production' && (
                 <HStack>
                     <Text fontWeight="semibold">Snap Id: </Text>
