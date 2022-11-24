@@ -61,6 +61,7 @@ export const SendModal = ({  onOpen, onClose, isOpen }) => {
                     <ModalHeader>Transfer</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
+                        <Text mb={5}>Selected Chain: {snapState.currentChainId}</Text>
                         <FormControl>
                             <FormLabel>Destination Address</FormLabel>
                             <Input
