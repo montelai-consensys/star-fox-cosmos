@@ -70,6 +70,7 @@ export const getSnapSingleNetworkBalances = (
       imageURI: uri as string,
     };
   });
+  console.debug(chainName, balances);
 
   return balances;
 };
@@ -88,6 +89,7 @@ export const getAllNetworkBalances = (): SnapBalances => {
       //);
     }
   }
+  console.debug(`in balances`, snapBalances);
 
   return snapBalances;
 };

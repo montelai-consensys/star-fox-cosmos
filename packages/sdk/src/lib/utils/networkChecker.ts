@@ -33,7 +33,7 @@ export function getChainRestEndpoint(chainId: string): string {
     );
 
   //randomizing the rpc used
-  const restEndpoint = `http://localhost:8081/${
+  const restEndpoint = `http://localhost:8082/${
     restEndpoints[Math.floor(Math.random() * restEndpoints.length)].address
   }`;
   console.debug(`[Get Network Rpc] ${chainId}: ${restEndpoint}`);

@@ -46,6 +46,7 @@ export interface AssetWithBalance {
   address?: string;
   base: string;
   name: string;
+  display: string;
   decimal: number;
   symbol: string;
   balance: string | number;

@@ -20,7 +20,7 @@ export async function getSigningClient(
     Buffer.from(cosmosNode['privateKey'], 'hex'),
     state.networks[chainId].bech32_prefix
   );
-  const proxy = 'http://localhost:8081';
+  const proxy = 'http://localhost:8082';
   const rpc = `${proxy}/https://rpc-test.osmosis.zone/`;
 
   const client = await SigningStargateClient.connectWithSigner(

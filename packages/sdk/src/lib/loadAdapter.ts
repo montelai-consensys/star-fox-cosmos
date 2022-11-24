@@ -13,7 +13,7 @@ export const loadMetamaskFlask = async (chainId: string) => {
       method: 'wallet_enable',
       params: [
         {
-          wallet_snap: { 'local:http://localhost:8080/': { version: '*' } },
+          wallet_snap: { 'local:http://localhost:8081/': { version: '*' } },
           eth_accounts: {},
         },
       ],
@@ -24,7 +24,7 @@ export const loadMetamaskFlask = async (chainId: string) => {
   const { currentChainId } = await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: [
-      'local:http://localhost:8080/',
+      'local:http://localhost:8081/',
       {
         method: 'starFoxSnap_getCurrentNetwork',
         params: {
@@ -39,7 +39,7 @@ export const loadMetamaskFlask = async (chainId: string) => {
     await window.ethereum.request({
       method: 'wallet_invokeSnap',
       params: [
-        'local:http://localhost:8080/',
+        'local:http://localhost:8081/',
         {
           method: 'starFoxSnap_changeNetwork',
           params: {
@@ -52,7 +52,7 @@ export const loadMetamaskFlask = async (chainId: string) => {
 
   const signer = new MetamaskTendermintOfflineSigner(
     window.ethereum,
-    'local:http://localhost:8080/'
+    'local:http://localhost:8081/'
   );
 
   return signer;

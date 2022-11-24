@@ -1,5 +1,5 @@
 export const siteConfig = {
-  snapId: 'local:http://localhost:8080/',
+  snapId: 'local:http://localhost:8081/',
   snapVersion: process.env.REACT_APP_SNAP_VERSION
     ? process.env.REACT_APP_SNAP_VERSION
     : '*',
