@@ -1,4 +1,5 @@
-#WIP: Star Fox Cosmos Snap
+# WIP: Star Fox Cosmos Snap
+
 
 ## TODO:
 - IBC cross chain transfers and test
@@ -37,7 +38,14 @@ yarn nx build sdk
 cd packages/junoswap-interface
 yarn install
 ```
+### Run Forward Proxy
+This is needed because alot of cosmos ecosystems' rpcs currently do not support cors. This is a temporary workaround until own nodes are live.
 
+
+```bash
+cd packages/forward-proxy
+yarn start
+```
 ### Run Snap
 ```bash
 cd packages/snap
@@ -61,12 +69,5 @@ cd packages/junoswap-interface
 yarn dev
 ```
 
-### Run Forward Proxy
-This is needed because alot of cosmos ecosystems' rpcs currently do not support cors. This is a temporary workaround until own nodes are live.
 
-
-```bash
-cd packages/forward-proxy
-yarn start
-```
 
