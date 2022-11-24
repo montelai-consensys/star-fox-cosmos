@@ -67,7 +67,7 @@ const Chain = () => {
 
     if (!chainId || !chainState[chainId as string]) {
         return <Spinner />;
-    }
+    } 
 
 
     return (
@@ -101,10 +101,6 @@ const Chain = () => {
                         <TabPanel><GovernancePanel chainId={chainId}/></TabPanel>
                     </TabPanels>
                 </Tabs>
-                <HStack>
-                    <Text>{chainId}</Text>
-                    <Debug />
-                </HStack>
             </VStack>
         </Flex>
     );

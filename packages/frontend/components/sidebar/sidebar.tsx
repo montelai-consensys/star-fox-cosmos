@@ -27,6 +27,7 @@ import {CrossChainSendModal} from '../send/cross-chain-send-modal';
 import {SidebarChainRow} from './chain-row';
 import {useState} from 'react';
 import {AccountSidebar} from './account-sidebar';
+import { Debug } from '../debug/debug';
 
 export const Sidebar = () => {
     const router = useRouter();
@@ -116,6 +117,7 @@ export const Sidebar = () => {
 
             {isTestnetSwitch && showChains("Testnet", testnetChains)}
             <HStack justifySelf="flex-end"><Text>Show Testnets</Text><Switch isChecked={isTestnetSwitch} onChange={() => setTestnetSwitch(!isTestnetSwitch)}/></HStack>
+            <Debug />
         </VStack>
     );
 };

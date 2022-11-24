@@ -87,8 +87,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
       console.debug('[getCurrentNetwork] Starting');
 
       return {
+        network: state.networks[state.currentChainId],
         currentChainId: state.currentChainId,
-        currentAddress: state.currentAddress,
+        address: state.currentAddress,
       };
     case 'starFoxSnap_addNetwork':
       console.debug('[addNetwork] Starting');

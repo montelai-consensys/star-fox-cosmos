@@ -41,7 +41,7 @@ export const AccountSidebar = () => {
             </HStack>
             <HStack>
                 <Text fontWeight="semibold">Current Address: </Text>
-                {chain ? (
+                {chain && snapState.currentAddress? (
                     <Tooltip label={snapState.currentAddress}>
                         <Text>{mininmizeText(snapState.currentAddress)}</Text>
                     </Tooltip>
